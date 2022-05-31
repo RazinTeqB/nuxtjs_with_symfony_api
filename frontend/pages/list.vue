@@ -1,17 +1,67 @@
 <template>
   <div>
-    {{ this.students }}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Gender</th>
+          <th>Dob</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="student in this.students['hydra:member']" :key="student.id">
+          <!-- {{student}} -->
+          <td>{{ student.id }}</td>
+          <td>{{ student.name }}</td>
+          <td>{{ student.email }}</td>
+          <td>{{ student.gender }}</td>
+          <td>{{ student.dob }}</td>
+          <td>
+            <nuxt-link :to="'/update/' + student.id">Update</nuxt-link>
+            <nuxt-link :to="'/delete/' + student.id">Delete</nuxt-link>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="container-fluid">
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="totalPage"
+        :per-page="this.perPage"
+        first-number
+        last-number
+        v-on:change="getStudents"
+      ></b-pagination>
+    </div>
   </div>
 </template>
 
 <script>
-// import axios from 'axios'
 export default {
   name: 'List',
+  middleware: 'auth',
+  components: {
+    // Paginate
+  },
   data() {
     return {
       students: [],
+      currentPage: 1,
+      perPage: 30,
+      totalPage: 1,
+      // currentPage: this.students.hasOwnProperty('hydra:totalItems')
+      //   ? this.students['hydra:totalItems']
+      //   : 0,
     }
+  },
+  watch: {
+    students(newData) {
+      this.totalPage = newData['hydra:totalItems']
+    },
   },
   head() {
     return {
@@ -25,15 +75,28 @@ export default {
   },
 
   methods: {
-    async getStudents() {
+    async getStudents(data) {
+      let pageNumber = 1
+      if (data !== undefined) {
+        pageNumber = data
+      }
       await this.$axios
-        .get('/api/students')
+        .get('/api/students?page=' + pageNumber, {
+          headers: {
+            // Accept: 'application/json',
+          },
+        })
         .then((response) => {
-          this.students = response.data
+          // this.students = response.data
+          this.updateStudents(response.data)
+          return response.data
         })
         .catch((error) => {
           console.log(error)
         })
+    },
+    updateStudents(data) {
+      this.students = data
     },
   },
 }

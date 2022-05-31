@@ -1,19 +1,41 @@
 <template>
   <div class="nav">
     <nuxt-link to="/" class="brand">Nuxt Front-End Demo</nuxt-link>
-    <nav>
+    <nav v-if="isAuthenticated">
       <nuxt-link class="header-links" to="/list">List</nuxt-link>
       <nuxt-link class="header-links" to="/find">Find</nuxt-link>
       <nuxt-link class="header-links" to="/create">Create</nuxt-link>
-      <nuxt-link class="header-links" to="/update">Update</nuxt-link>
-      <nuxt-link class="header-links" to="/delete">Delete</nuxt-link>
+      <a
+        class="header-links"
+        href="/logout"
+        title="Logout"
+        @click.prevent="logout"
+      >
+        {{ loggedInUser }}
+      </a>
+    </nav>
+    <nav v-else>
+      <nuxt-link class="header-links" to="/login">Login</nuxt-link>
     </nav>
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'NavBar',
   // layout: '../layout/default',
+  computed: {
+    ...mapGetters(['isAuthenticated', 'loggedInUser']),
+  },
+
+  methods: {
+    async logout() {
+      if (!confirm('Are you sure you want to logout?')) return
+      await this.$auth.logout('local')
+
+      this.$router.push('/login')
+    },
+  },
 }
 </script>
 
