@@ -2,15 +2,18 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\StudentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\StudentRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 #[ApiResource]
 #[ORM\HasLifecycleCallbacks]
+#[ApiFilter(DateFilter::class, properties: ['dob'])]
 class Student
 {
     #[ORM\Id]
