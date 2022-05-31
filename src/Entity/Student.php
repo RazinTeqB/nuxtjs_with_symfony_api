@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 #[ApiResource]
@@ -24,7 +25,8 @@ class Student
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\Email(message: "The email '{{ value }}' is not a valid email.")]
     private $email;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -51,7 +53,8 @@ class Student
         $this->setCreated(new \DateTime());
     }
 
-    public function __construct()
+    #[ORM\PreUpdate]
+    public function onPreUpdate()
     {
         $this->setUpdated(new \DateTime());
     }
@@ -97,9 +100,9 @@ class Student
         return $this;
     }
 
-    public function getDob(): ?\DateTimeInterface
+    public function getDob(): ?string
     {
-        return $this->dob;
+        return $this->dob->format('Y-m-d');
     }
 
     public function setDob(\DateTimeInterface $dob): self
