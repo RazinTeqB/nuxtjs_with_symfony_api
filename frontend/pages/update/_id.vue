@@ -1,10 +1,9 @@
 <template>
   <div class="container-fluid">
-    <h1>Create New Student</h1>
+    <h1>Update Student {{ this.data.name }}</h1>
     <form>
       <div class="row pt-3">
-        <div class="col-md-3">
-        </div>
+        <div class="col-md-3"></div>
         <div class="col-md-6">
           <div class="form-group">
             <label for="fullName">Full Name</label>
@@ -72,9 +71,7 @@
           </div>
           <div class="form-group">
             <div
-              v-if="
-                errors.gender !== undefined && errors.gender != ''
-              "
+              v-if="errors.gender !== undefined && errors.gender != ''"
               class="invalid-feedback d-block"
             >
               {{ errors.gender }}
@@ -100,9 +97,10 @@
             <button
               type="submit"
               class="btn btn-primary"
-              @click.prevent="create"
+              :disabled="this.data.name === '' || this.data.email === '' || this.data.dob === '' || this.data.gender === ''"
+              @click.prevent="updateStudent"
             >
-              Submit
+              Update
             </button>
           </div>
         </div>
@@ -114,10 +112,11 @@
 
 <script>
 export default {
-  name: 'Create',
+  name: 'Update',
   middleware: 'auth',
   data() {
     return {
+      studentId: '',
       today: new Date().toISOString().split('T')[0],
       data: {
         name: '',
@@ -128,20 +127,44 @@ export default {
       errors: '',
     }
   },
+
   head() {
     return {
-      title: 'Create new student',
+      title: 'Update Student',
     }
   },
   computed: {},
+  mounted() {
+    this.studentId = this.$route.params.id
+    if (this.studentId) {
+      this.getStudent(this.studentId)
+    }
+  },
   methods: {
-    async create() {
+    async getStudent(data) {
       await this.$axios
-        .post('/api/students', this.data)
+        .get('/api/students/' + data, {
+          headers: {
+            // Accept: 'application/json',
+          },
+        })
+        .then((response) => {
+          this.data.name = response.data.name
+          this.data.email = response.data.email
+          this.data.dob = response.data.dob
+          this.data.gender = response.data.gender.toLowerCase()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    async updateStudent() {
+      await this.$axios
+        .put('/api/students/' + this.studentId, this.data)
         .then((response) => {
           if (response.data.email !== '') {
-            alert('Student created successfully')
-            this.$router.push('/')
+            alert('Student updated successfully')
+            this.$router.push('/list')
           }
         })
         .catch((rspError) => {
