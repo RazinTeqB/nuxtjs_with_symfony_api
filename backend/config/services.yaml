@@ -23,5 +23,13 @@ services:
     App\OpenApi\JwtDecorator:
         decorates: 'api_platform.openapi.factory'
         arguments: ['@.inner'] 
+
+    App\Normalizer\NullableDateTimeDenormalizer:
+        arguments:
+            $dateTimeNormalizer: '@serializer.normalizer.datetime'
+        tags:
+            -
+                name: serializer.normalizer
+                priority: 100
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

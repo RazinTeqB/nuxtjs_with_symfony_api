@@ -9,12 +9,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 #[ApiResource]
 #[ORM\HasLifecycleCallbacks]
 #[ApiFilter(DateFilter::class, properties: ['dob'])]
+#[UniqueEntity(fields: ['email'], message: 'This email is already in use.')]
+
 class Student
 {
     #[ORM\Id]
@@ -23,16 +26,20 @@ class Student
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "Please enter a name")]
     private $name;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\Email(message: "The email '{{ value }}' is not a valid email.")]
+    #[Assert\NotBlank(message: "Please enter an email")]
     private $email;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "Please select gender")]
     private $gender;
 
     #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank(message: "Please select date of birth")]
     private $dob;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -105,7 +112,7 @@ class Student
         return $this->dob->format('Y-m-d');
     }
 
-    public function setDob(\DateTimeInterface $dob): self
+    public function setDob(?\DateTime $dob): self
     {
         $this->dob = $dob;
 

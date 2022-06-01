@@ -1,0 +1,162 @@
+<template>
+  <div class="container-fluid">
+    <h1>Create New Student</h1>
+    <form>
+      <div class="row pt-3">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input
+              id="fullName"
+              v-model="data.name"
+              type="text"
+              class="form-control"
+              aria-describedby="emailHelp"
+            />
+            <div
+              v-if="this.errors.name !== undefined && this.errors.name != ''"
+              class="invalid-feedback d-block"
+            >
+              {{ this.errors.name }}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              v-model="data.email"
+              type="email"
+              class="form-control"
+            />
+            <div
+              v-if="this.errors.email !== undefined && this.errors.email != ''"
+              class="invalid-feedback d-block"
+            >
+              {{ this.errors.email }}
+            </div>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input
+              id="male"
+              v-model="data.gender"
+              type="radio"
+              name="gender"
+              class="custom-control-input"
+              value="male"
+            />
+            <label class="custom-control-label" for="male">Male</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input
+              id="female"
+              v-model="data.gender"
+              type="radio"
+              name="gender"
+              class="custom-control-input"
+              value="female"
+            />
+            <label class="custom-control-label" for="female">Female</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input
+              id="other"
+              v-model="data.gender"
+              type="radio"
+              name="gender"
+              class="custom-control-input"
+              value="other"
+            />
+            <label class="custom-control-label" for="other">Other</label>
+          </div>
+          <div class="form-group">
+            <div
+              v-if="
+                this.errors.gender !== undefined && this.errors.gender != ''
+              "
+              class="invalid-feedback d-block"
+            >
+              {{ this.errors.gender }}
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <label for="dob">DOB</label>
+            <input
+              id="dob"
+              v-model="data.dob"
+              type="date"
+              class="form-control"
+              :max="today"
+            />
+            <div
+              v-if="this.errors.dob !== undefined && this.errors.dob != ''"
+              class="invalid-feedback d-block"
+            >
+              {{ this.errors.dob }}
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              @click.prevent="create"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Create',
+  middleware: 'auth',
+  data() {
+    return {
+      today: new Date().toISOString().split('T')[0],
+      data: {
+        name: '',
+        email: '',
+        gender: '',
+        dob: '',
+      },
+      errors: '',
+    }
+  },
+  head() {
+    return {
+      title: 'Create An Event',
+    }
+  },
+  computed: {},
+  methods: {
+    async create() {
+      await this.$axios
+        .post('/api/students', this.data)
+        .then((response) => {
+          if (response.data.email !== '') {
+            alert('Student created successfully')
+            this.$router.push('/')
+          }
+        })
+        .catch((rspError) => {
+          this.errors = []
+          if (rspError.response.data.violations === undefined) {
+            console.error(rspError.response.data['hydra:description'])
+          } else {
+            for (let i = 0; i < rspError.response.data.violations.length; i++) {
+              this.errors[rspError.response.data.violations[i].propertyPath] =
+                rspError.response.data.violations[i].message
+            }
+            console.log(this.errors)
+          }
+        })
+    },
+  },
+}
+</script>
