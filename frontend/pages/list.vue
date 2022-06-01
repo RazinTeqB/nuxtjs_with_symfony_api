@@ -1,40 +1,52 @@
 <template>
-  <div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Gender</th>
-          <th>Dob</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="student in this.students['hydra:member']" :key="student.id">
-          <!-- {{student}} -->
-          <td>{{ student.id }}</td>
-          <td>{{ student.name }}</td>
-          <td>{{ student.email }}</td>
-          <td>{{ student.gender }}</td>
-          <td>{{ student.dob }}</td>
-          <td>
-            <nuxt-link :to="'/update/' + student.id">Update</nuxt-link>
-            <nuxt-link :to="'/delete/' + student.id">Delete</nuxt-link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 p-3">
+          <nuxt-link class="btn btn-sm btn-primary float-right" to="/create">Create</nuxt-link>
+      </div>
+    </div>
+    <div style="max-height: 500px; overflow-y: scroll">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Dob</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="student in this.students['hydra:member']"
+            :key="student.id"
+          >
+            <!-- {{student}} -->
+            <td>{{ student.id }}</td>
+            <td>{{ student.name }}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.gender }}</td>
+            <td>{{ student.dob }}</td>
+            <td>
+              <nuxt-link :to="'/update/' + student.id">Update</nuxt-link>
+              <nuxt-link :to="'/delete/' + student.id">Delete</nuxt-link>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid mt-4">
       <b-pagination
         v-model="currentPage"
         :total-rows="totalPage"
         :per-page="this.perPage"
-        first-number
-        last-number
-        v-on:change="getStudents"
+         first-text="First"
+        prev-text="Prev"
+        next-text="Next"
+        last-text="Last"
+        @change="getStudents"
       ></b-pagination>
     </div>
   </div>
@@ -44,9 +56,6 @@
 export default {
   name: 'List',
   middleware: 'auth',
-  components: {
-    // Paginate
-  },
   data() {
     return {
       students: [],
@@ -58,15 +67,15 @@ export default {
       //   : 0,
     }
   },
+    head() {
+      return {
+        title: 'List All Students',
+      }
+    },
   watch: {
     students(newData) {
       this.totalPage = newData['hydra:totalItems']
     },
-  },
-  head() {
-    return {
-      title: 'List All Students',
-    }
   },
 
   mounted() {
