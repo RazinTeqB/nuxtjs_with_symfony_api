@@ -201,7 +201,7 @@ textarea {
 [type='search']::-webkit-search-decoration {
   -webkit-appearance: none;
 }
-[type='text'],
+/* [type='text'],
 [type='number'],
 [type='search'],
 [type='password'] {
@@ -209,7 +209,7 @@ textarea {
   width: 100%;
   padding: 0 10px;
   font-size: 20px;
-}
+} */
 [type='text']:focus,
 [type='number']:focus,
 [type='search']:focus,
