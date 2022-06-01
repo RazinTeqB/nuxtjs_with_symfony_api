@@ -16,10 +16,10 @@
               aria-describedby="emailHelp"
             />
             <div
-              v-if="this.errors.name !== undefined && this.errors.name != ''"
+              v-if="errors.name !== undefined && errors.name != ''"
               class="invalid-feedback d-block"
             >
-              {{ this.errors.name }}
+              {{ errors.name }}
             </div>
           </div>
           <div class="form-group">
@@ -31,10 +31,10 @@
               class="form-control"
             />
             <div
-              v-if="this.errors.email !== undefined && this.errors.email != ''"
+              v-if="errors.email !== undefined && errors.email != ''"
               class="invalid-feedback d-block"
             >
-              {{ this.errors.email }}
+              {{ errors.email }}
             </div>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
@@ -73,11 +73,11 @@
           <div class="form-group">
             <div
               v-if="
-                this.errors.gender !== undefined && this.errors.gender != ''
+                errors.gender !== undefined && errors.gender != ''
               "
               class="invalid-feedback d-block"
             >
-              {{ this.errors.gender }}
+              {{ errors.gender }}
             </div>
           </div>
           <div class="form-group mt-3">
@@ -90,10 +90,10 @@
               :max="today"
             />
             <div
-              v-if="this.errors.dob !== undefined && this.errors.dob != ''"
+              v-if="errors.dob !== undefined && errors.dob != ''"
               class="invalid-feedback d-block"
             >
-              {{ this.errors.dob }}
+              {{ errors.dob }}
             </div>
           </div>
           <div class="form-group mt-3">
