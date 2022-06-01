@@ -41,7 +41,6 @@ export default {
     build: {},
 
     axios: {
-        // baseURL: process.env.API_URL,
         baseURL: process.env.API_URL || "http://localhost:8000/",
     },
 
