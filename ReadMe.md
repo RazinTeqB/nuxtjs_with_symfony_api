@@ -53,3 +53,7 @@
   `npm run dev`
 
 - ### Visit generated site in your browser
+
+- ### Login with 
+  - username: test@email.com
+  - password: 1234
