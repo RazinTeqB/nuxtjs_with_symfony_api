@@ -7,7 +7,7 @@
             Welcome back! Login Into Your Account
           </h3>
 
-          <Notification v-if="error" :message="error" />
+          <Notification v-if="error" :message="error.data.message" />
 
           <form method="post" @submit.prevent="login">
             <div class="field">
@@ -59,8 +59,8 @@ export default {
 
   data() {
     return {
-      email: '',
-      password: '',
+      email: 'test@email.com',
+      password: '1234',
       error: null,
     }
   },
