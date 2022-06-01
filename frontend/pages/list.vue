@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="student in this.students['hydra:member']"
+            v-for="student in students['hydra:member']"
             :key="student.id"
           >
             <!-- {{student}} -->
@@ -41,7 +41,7 @@
       <b-pagination
         v-model="currentPage"
         :total-rows="totalPage"
-        :per-page="this.perPage"
+        :per-page="perPage"
          first-text="First"
         prev-text="Prev"
         next-text="Next"
@@ -101,7 +101,7 @@ export default {
           return response.data
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
         })
     },
     updateStudents(data) {
