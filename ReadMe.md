@@ -22,15 +22,18 @@
 
 - ### Step 2.4: Set Database Credentials in .env file
 
-- ### Step 2.5: Run the database fixture to load default user
+- ### Step 2.5: Run database migration
+
+  `php bin/console doctrine:schema:update --force`
+- ### Step 2.6: Run the database fixture to load default user
 
   `php bin/console doctrine:fixtures:load`
 
-- ### Step 2.6: Generate JWT Public/Secret Key [For more info visit [LexikJWTAuthenticationBundle Installation](https://github.com/lexik/LexikJWTAuthenticationBundle/blob/2.x/Resources/doc/index.rst#installation)]
+- ### Step 2.7: Generate JWT Public/Secret Key [For more info visit [LexikJWTAuthenticationBundle Installation](https://github.com/lexik/LexikJWTAuthenticationBundle/blob/2.x/Resources/doc/index.rst#installation)]
 
   `php bin/console lexik:jwt:generate-keypair`
 
-- ### Step 2.7: Start the server (with symfony cli)
+- ### Step 2.8: Start the server (with symfony cli)
   `symfony server:start`
 
 ### Step 3: Front End Setup
