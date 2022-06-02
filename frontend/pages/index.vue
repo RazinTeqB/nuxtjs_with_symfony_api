@@ -12,15 +12,6 @@
         >
       </li>
       <li class="d-flex align-item-center flex-row">
-        <nuxt-link class="header-links" to="/find"
-          >Find<span>
-            <small class="d-flex align-items-center"
-              >Find Specific Student</small
-            ></span
-          ></nuxt-link
-        >
-      </li>
-      <li class="d-flex align-item-center flex-row">
         <nuxt-link class="header-links" to="/create"
           >Create<span>
             <small class="d-flex align-items-center"

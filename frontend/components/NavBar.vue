@@ -3,7 +3,6 @@
     <nuxt-link to="/" class="brand">Nuxt Front-End Demo</nuxt-link>
     <nav v-if="isAuthenticated">
       <nuxt-link class="header-links" to="/list">List</nuxt-link>
-      <nuxt-link class="header-links" to="/find">Find</nuxt-link>
       <nuxt-link class="header-links" to="/create">Create</nuxt-link>
       <a
         class="header-links"
@@ -16,6 +15,7 @@
     </nav>
     <nav v-else>
       <nuxt-link class="header-links" to="/login">Login</nuxt-link>
+      <nuxt-link class="header-links" to="/register">Register</nuxt-link>
     </nav>
   </div>
 </template>

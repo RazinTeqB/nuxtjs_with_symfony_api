@@ -10,7 +10,6 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -70,7 +69,7 @@ class Student
     private $updated;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'students', cascade: ['persist', 'remove'])]
-    #[JoinColumn(name: "UserId", referencedColumnName: "id")]
+    #[ORM\JoinColumn(name: "UserId", referencedColumnName: "id", nullable: true, onDelete:'SET NULL')]
     #[Groups(["read", "write"])]
     private $user;
 

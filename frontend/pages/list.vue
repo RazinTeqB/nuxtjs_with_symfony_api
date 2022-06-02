@@ -6,89 +6,129 @@
           >Create</nuxt-link
         >
       </div>
-    </div>
-    <div style="max-height: 500px; overflow-y: scroll">
-      <div class="row my-3">
-        <div class="col-md-3">
-          <input
-            type="text"
-            class="form-control"
-            name="search[name]"
-            placeholder="Search by name"
-            v-model="search.name"
-            @input="searchFilter"
-          />
+      <div class="col-md-12 border-bottom rounded">
+        <div
+          class="container-fluid my-4 d-flex flex-row justify-content-between align-items-center"
+        >
+          <div class="flex-item">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalPage"
+              :per-page="search.perPage"
+              first-text="First"
+              prev-text="Prev"
+              next-text="Next"
+              last-text="Last"
+              @change="getStudents"
+            ></b-pagination>
+          </div>
+
+          <div class="flex-item">
+            <div
+              class="d-flex flex-row justify-content-around align-items-center"
+            >
+              <div class="flex-item">
+                <div class="form-group form-inline my-auto">
+                  <label for="perPageCount">Per Page</label>
+                  <select
+                    id="perPageCount"
+                    v-model="search.perPage"
+                    name="search[perPage]"
+                    class="form-control mr-4"
+                    style="width: 70px"
+                    @change="searchFilter"
+                  >
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <!-- <option :value="perPage * totalPage">All</option> -->
+                  </select>
+                </div>
+              </div>
+              <div class="flex-item">
+                Showing
+                <a href="javascript:void()" class="">{{
+                  currentPageItemsTotal
+                }}</a>
+                Total
+                <a href="javascript:void()" class="">{{ totalPage }}</a> page(s)
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-3">
-          <input
-            type="text"
-            class="form-control"
-            name="search[email]"
-            placeholder="Search by email"
-            v-model="search.email"
-            @input="searchFilter"
-          />
-        </div>
-        <div class="col-md-3">
-          <input
-            type="text"
-            class="form-control"
-            name="search[gender]"
-            placeholder="Search by gender"
-            v-model="search.gender"
-            @input="searchFilter"
-          />
-        </div>
-        <div class="col-md-3"></div>
       </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Gender</th>
-            <th>Dob</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="student in students['hydra:member']" :key="student.id">
-            <!-- {{student}} -->
-            <td>{{ student.id }}</td>
-            <td>{{ student.name }}</td>
-            <td>{{ student.email }}</td>
-            <td>{{ student.gender }}</td>
-            <td>{{ student.dob }}</td>
-            <td>
-              <nuxt-link :to="'/update/' + student.id">Update</nuxt-link>
-              <a class="" href="#" @click.prevent="deleteStudent(student.id)"
-                >Delete</a
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="col-md-12">
+        <div class="row my-3">
+          <div class="col-md-3">
+            <input
+              v-model="search.name"
+              type="text"
+              class="form-control"
+              name="search[name]"
+              placeholder="Search by name"
+              autocomplete="off"
+              @input="searchFilter"
+            />
+          </div>
+          <div class="col-md-3">
+            <input
+              v-model="search.email"
+              type="text"
+              class="form-control"
+              name="search[email]"
+              placeholder="Search by email"
+              autocomplete="off"
+              @input="searchFilter"
+            />
+          </div>
+          <div class="col-md-3">
+            <input
+              v-model="search.gender"
+              type="text"
+              class="form-control"
+              name="search[gender]"
+              placeholder="Search by gender"
+              autocomplete="off"
+              @input="searchFilter"
+            />
+          </div>
+          <div class="col-md-3"></div>
+        </div>
+      </div>
     </div>
 
-    <div
-      class="container-fluid mt-4 d-flex flex-row justify-content-between align-items-center"
-    >
-      <div class="flex-item">
-        <b-pagination
-          v-model="currentPage"
-          :total-rows="totalPage"
-          :per-page="perPage"
-          first-text="First"
-          prev-text="Prev"
-          next-text="Next"
-          last-text="Last"
-          @change="getStudents"
-        ></b-pagination>
-      </div>
-      <div class="flex-item">
-        Showing <a href="javascript:void()" class="">{{ currentPageItemsTotal}}</a> Total
-        <a href="javascript:void()" class="">{{ totalPage }}</a> page(s)
+    <!-- <div style="max-height: 500px; overflow-y: scroll"> -->
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Gender</th>
+              <th>Dob</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="student in students['hydra:member']" :key="student.id">
+              <!-- {{student}} -->
+              <td>{{ student.id }}</td>
+              <td>{{ student.name }}</td>
+              <td>{{ student.email }}</td>
+              <td>{{ student.gender }}</td>
+              <td>{{ student.dob }}</td>
+              <td>
+                <nuxt-link :to="'/update/' + student.id">Update</nuxt-link>
+                <a class="" href="#" @click.prevent="deleteStudent(student.id)"
+                  >Delete</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -103,13 +143,13 @@ export default {
     return {
       students: [],
       currentPage: 1,
-      perPage: 10,
       totalPage: 1,
       currentPageItemsTotal: 0,
       search: {
         name: '',
         email: '',
         gender: '',
+        perPage: 10,
       },
       searchQueryString: '',
     }
@@ -128,7 +168,7 @@ export default {
 
   mounted() {
     this.getStudents()
-    this.searchFilter = debounce(this.searchFilter, 500)
+    this.searchFilter = debounce(this.searchFilter, 300)
     // console.log(this.$axios.defaults.baseURL)
   },
 
@@ -150,7 +190,7 @@ export default {
       await this.$axios
         .get(
           '/api/students?itemsPerPage=' +
-            this.perPage +
+            this.search.perPage +
             '&page=' +
             pageNumber +
             '&' +
