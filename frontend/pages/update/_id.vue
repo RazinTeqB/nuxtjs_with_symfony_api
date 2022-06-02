@@ -120,10 +120,16 @@
                 this.data.name === '' ||
                 this.data.email === '' ||
                 this.data.dob === '' ||
-                this.data.gender === ''
+                this.data.gender === '' ||
+                isLoading
               "
               @click.prevent="updateStudent"
             >
+              <font-awesome-icon
+                v-if="isLoading == true ? true : false"
+                :icon="['fas', 'spinner']"
+                class="fa-spin"
+              />
               Update
             </button>
           </div>
@@ -151,6 +157,7 @@ export default {
       },
       errors: '',
       users: [],
+      isLoading: false,
     }
   },
 
@@ -163,8 +170,10 @@ export default {
   mounted() {
     this.studentId = this.$route.params.id
     if (this.studentId) {
+      this.isLoading = true
       this.getStudent(this.studentId)
       this.getUsers()
+      this.isLoading = false
     }
   },
   methods: {
@@ -201,6 +210,7 @@ export default {
         })
     },
     async updateStudent() {
+      this.isLoading = true
       this.data.user = this.data.user === '' ? null : this.data.user
 
       await this.$axios
@@ -221,7 +231,9 @@ export default {
                 rspError.response.data.violations[i].message
             }
           }
+          this.isLoading = false
         })
+      this.isLoading = false
     },
   },
 }

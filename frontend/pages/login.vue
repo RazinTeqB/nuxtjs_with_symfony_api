@@ -33,14 +33,16 @@
               </div>
             </div>
             <div class="control">
-              <button type="submit" class="btn btn-primary"
-              :disabled="isLoading">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                :disabled="isLoading"
+              >
                 <font-awesome-icon
+                  v-if="isLoading == true ? true : false"
                   :icon="['fas', 'spinner']"
                   class="fa-spin"
-                  v-if="isLoading == true ? true : false"
                 />
-
                 Log In
               </button>
             </div>
