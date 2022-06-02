@@ -7,32 +7,66 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ["groups" => ["read"]],
+    denormalizationContext: ["groups" => ["write"]],
+)]
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields: ['username'], message: 'This email is already in use.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["read"])]
     private $id;
 
     // #[ORM\Column(type: 'string', length: 180, unique: true)]
     // private $email;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Groups(["read", "write"])]
     private $username;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(["read"])]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
     private $password;
 
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Groups(["read"])]
+    private $created;
+
+    #[Gedmo\Timestampable]
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups(["read"])]
+    private $updated;
+
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Student::class)]
+    // #[Groups(["write"])]
     private $students;
+
+    #[ORM\PrePersist]
+    public function onPrePersist()
+    {
+        $this->setCreated(new \DateTime());
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate()
+    {
+        $this->setUpdated(new \DateTime());
+    }
 
     public function __construct()
     {
@@ -107,6 +141,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getCreated(): ?\DateTime
+    {
+        return $this->created;
+    }
+
+    public function setCreated(\DateTime $created): self
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    public function getUpdated(): ?\DateTime
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated(\DateTime $updated): self
+    {
+        $this->updated = $updated;
+
+        return $this;
     }
 
     /**

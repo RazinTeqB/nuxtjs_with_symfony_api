@@ -38,9 +38,8 @@
           </form>
           <div class="has-text-centered" style="margin-top: 20px">
             <p>
-              Don't have an account? Register
-              <small>will be available soon</small>
-              <!-- <nuxt-link to="/register">Register</nuxt-link> -->
+              Don't have an account?
+              <nuxt-link to="/register">Register</nuxt-link>
             </p>
           </div>
         </div>
@@ -56,7 +55,7 @@ export default {
   components: {
     Notification,
   },
-
+  middleware: 'guest',
   data() {
     return {
       email: 'test@email.com',

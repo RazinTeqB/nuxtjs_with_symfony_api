@@ -94,10 +94,34 @@
             </div>
           </div>
           <div class="form-group mt-3">
+            <label for="user">User</label>
+            <select id="user" v-model="data.user" class="form-control">
+              <option value="">Select User</option>
+              <option
+                v-for="user in users['hydra:member']"
+                :key="user.id"
+                :value="user['@id']"
+              >
+                {{ user.username }}
+              </option>
+            </select>
+            <div
+              v-if="errors.dob !== undefined && errors.dob != ''"
+              class="invalid-feedback d-block"
+            >
+              {{ errors.dob }}
+            </div>
+          </div>
+          <div class="form-group mt-3">
             <button
               type="submit"
               class="btn btn-primary"
-              :disabled="this.data.name === '' || this.data.email === '' || this.data.dob === '' || this.data.gender === ''"
+              :disabled="
+                this.data.name === '' ||
+                this.data.email === '' ||
+                this.data.dob === '' ||
+                this.data.gender === ''
+              "
               @click.prevent="updateStudent"
             >
               Update
@@ -123,8 +147,10 @@ export default {
         email: '',
         gender: '',
         dob: '',
+        user: '',
       },
       errors: '',
+      users: [],
     }
   },
 
@@ -138,6 +164,7 @@ export default {
     this.studentId = this.$route.params.id
     if (this.studentId) {
       this.getStudent(this.studentId)
+      this.getUsers()
     }
   },
   methods: {
@@ -153,12 +180,29 @@ export default {
           this.data.email = response.data.email
           this.data.dob = response.data.dob
           this.data.gender = response.data.gender.toLowerCase()
+          this.data.user = response.data.user['@id']
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    async getUsers() {
+      await this.$axios
+        .get('/api/users', {
+          headers: {
+            // Accept: 'application/json',
+          },
+        })
+        .then((response) => {
+          this.users = response.data
         })
         .catch((error) => {
           console.error(error)
         })
     },
     async updateStudent() {
+      this.data.user = this.data.user === '' ? null : this.data.user
+
       await this.$axios
         .put('/api/students/' + this.studentId, this.data)
         .then((response) => {
