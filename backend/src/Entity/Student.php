@@ -7,18 +7,73 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\StudentRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation\Groups;
+use App\Controller\StudentController;
 
+// File Upload Reference https://digitalfortress.tech/php/file-upload-with-api-platform-and-symfony/
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 #[ApiResource(
     normalizationContext: ["groups" => ["read"]],
     denormalizationContext: ["groups" => ["write"]],
-    itemOperations: ["get", "patch", "put", "delete"]
+    itemOperations: ["get", "patch", "put", "delete"],
+    collectionOperations: [
+        "get",
+        "post" => [
+            "controller" => StudentController::class,
+            "deserialize" => false,
+            "opeapi_context" => [
+                "requestBody" => [
+                    "description" => "File upload to student",
+                    "required" => true,
+                    "content" => [
+                        "multipart/form-data" => [
+                            "schema" => [
+                                "type" => "object",
+                                "properties" => [
+                                    "name" => [
+                                        "type" => "string",
+                                        "description" => "Student name",
+                                        "example" => "John Doe",
+                                        "required" => true,
+                                    ],
+                                    "email" => [
+                                        "type" => "string",
+                                        "description" => "Student email",
+                                        "example" => "demo@email.com",
+                                        "required" => true,
+                                    ],
+                                    "gender" => [
+                                        "type" => "string",
+                                        "description" => "Student gender",
+                                        "example" => "male|female|other",
+                                        "required" => true,
+                                    ],
+                                    "dob" => [
+                                        "type" => "string",
+                                        "description" => "Student date of birth",
+                                        "example" => "2000-12-31",
+                                        "required" => true,
+                                    ],
+                                    "image" => [
+                                        "type" => "string",
+                                        "format" => "binary",
+                                        "description" => "Student image file",
+                                    ],
+
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
 )]
 #[ORM\HasLifecycleCallbacks]
 #[ApiFilter(DateFilter::class, properties: ['dob'])]
@@ -56,6 +111,14 @@ class Student
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Groups(["read", "write"])]
+    #[ApiProperty(
+        iri: "http://schema.org/image",
+        attributes: [
+            "openapi_context" => [
+                "type" => "file",
+            ]
+        ]
+    )]
     private $image;
 
     #[Gedmo\Timestampable(on: 'create')]
@@ -69,7 +132,7 @@ class Student
     private $updated;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'students', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: "UserId", referencedColumnName: "id", nullable: true, onDelete:'SET NULL')]
+    #[ORM\JoinColumn(name: "UserId", referencedColumnName: "id", nullable: true, onDelete: 'SET NULL')]
     #[Groups(["read", "write"])]
     private $user;
 

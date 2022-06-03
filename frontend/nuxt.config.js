@@ -49,6 +49,9 @@ export default {
 
     axios: {
         baseURL: process.env.API_URL || "http://localhost:8000/",
+        headers: {
+            Accept: 'application/ld+json'
+        }
     },
 
     auth: {

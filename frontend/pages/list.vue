@@ -51,7 +51,7 @@
                 <a href="javascript:void()" class="">{{
                   currentPageItemsTotal
                 }}</a>
-                Total
+                of Total
                 <a href="javascript:void()" class="">{{ totalPage }}</a> page(s)
               </div>
             </div>
