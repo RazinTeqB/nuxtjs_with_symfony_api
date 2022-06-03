@@ -5,7 +5,7 @@
         <div class="column is-4 is-offset-4">
           <h3 class="title has-text-centered">Register New Account</h3>
 
-          <Notification v-if="errors" :message="errors" />
+          <!-- <Notification v-if="errors" :message="errors" /> -->
 
           <form method="post" @submit.prevent="register">
             <div class="field">
@@ -67,9 +67,15 @@
                   email === '' ||
                   password === '' ||
                   confirmPassword === '' ||
-                  password !== confirmPassword
+                  password !== confirmPassword ||
+                  isLoading
                 "
               >
+                <font-awesome-icon
+                  v-if="isLoading == true ? true : false"
+                  :icon="['fas', 'spinner']"
+                  class="fa-spin"
+                />
                 Register
               </button>
             </div>
@@ -87,10 +93,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Notification from '~/components/Notification'
+// import Notification from '~/components/Notification'
 export default {
   components: {
-    Notification,
+    // Notification,
   },
   middleware: 'guest',
   data() {
@@ -99,6 +105,7 @@ export default {
       password: '',
       confirmPassword: '',
       errors: '',
+      isLoading: false,
     }
   },
   computed: {
@@ -107,6 +114,7 @@ export default {
   methods: {
     async register() {
       try {
+        this.isLoading = true
         await this.$axios
           .post('/api/register', {
             username: this.email,
@@ -141,11 +149,14 @@ export default {
                   rspError.response.data.violations[i].message
               }
             }
+            this.isLoading = false
           })
       } catch (e) {
         // this.error = e.response.data.message
         this.errors = e.response
+        this.isLoading = false
       }
+      this.isLoading = false
     },
   },
 }

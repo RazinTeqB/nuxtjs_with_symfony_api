@@ -22,3 +22,4 @@ yarn-error.log
 ###< lexik/jwt-authentication-bundle ###
 
 .git_*
+/public/uploads/

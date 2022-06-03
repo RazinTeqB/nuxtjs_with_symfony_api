@@ -27,6 +27,7 @@ export default {
     buildModules: [
         // https://go.nuxtjs.dev/eslint
         '@nuxtjs/eslint-module',
+        '@nuxtjs/fontawesome',
     ],
 
     // Modules: https://go.nuxtjs.dev/config-modules
@@ -37,11 +38,20 @@ export default {
         '@nuxtjs/auth-next'
     ],
 
+    fontawesome: {
+        icons: {
+            solid: true,
+            brands: true
+        }
+    },
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {},
 
     axios: {
         baseURL: process.env.API_URL || "http://localhost:8000/",
+        headers: {
+            Accept: 'application/ld+json'
+        }
     },
 
     auth: {

@@ -33,7 +33,18 @@
               </div>
             </div>
             <div class="control">
-              <button type="submit" class="btn btn-primary">Log In</button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                :disabled="isLoading"
+              >
+                <font-awesome-icon
+                  v-if="isLoading == true ? true : false"
+                  :icon="['fas', 'spinner']"
+                  class="fa-spin"
+                />
+                Log In
+              </button>
             </div>
           </form>
           <div class="has-text-centered" style="margin-top: 20px">
@@ -61,6 +72,7 @@ export default {
       email: 'test@email.com',
       password: '1234',
       error: null,
+      isLoading: false,
     }
   },
   computed: {
@@ -68,6 +80,7 @@ export default {
   },
   methods: {
     async login() {
+      this.isLoading = true
       try {
         await this.$auth.loginWith('local', {
           data: {
@@ -80,7 +93,9 @@ export default {
       } catch (e) {
         // this.error = e.response.data.message
         this.error = e.response
+        this.isLoading = false
       }
+      this.isLoading = false
     },
   },
 }

@@ -3,8 +3,7 @@
     <h1>Create New Student</h1>
     <form>
       <div class="row pt-3">
-        <div class="col-md-3">
-        </div>
+        <div class="col-md-3"></div>
         <div class="col-md-6">
           <div class="form-group">
             <label for="fullName">Full Name</label>
@@ -72,9 +71,7 @@
           </div>
           <div class="form-group">
             <div
-              v-if="
-                errors.gender !== undefined && errors.gender != ''
-              "
+              v-if="errors.gender !== undefined && errors.gender != ''"
               class="invalid-feedback d-block"
             >
               {{ errors.gender }}
@@ -100,8 +97,14 @@
             <button
               type="submit"
               class="btn btn-primary"
+              :disabled="isLoading"
               @click.prevent="create"
             >
+              <font-awesome-icon
+                v-if="isLoading == true ? true : false"
+                :icon="['fas', 'spinner']"
+                class="fa-spin"
+              />
               Submit
             </button>
           </div>
@@ -126,6 +129,7 @@ export default {
         dob: '',
       },
       errors: '',
+      isLoading: false,
     }
   },
   head() {
@@ -136,6 +140,7 @@ export default {
   computed: {},
   methods: {
     async create() {
+      this.isLoading = true
       await this.$axios
         .post('/api/students', this.data)
         .then((response) => {
@@ -154,7 +159,9 @@ export default {
                 rspError.response.data.violations[i].message
             }
           }
+          this.isLoading = false
         })
+      this.isLoading = false
     },
   },
 }
