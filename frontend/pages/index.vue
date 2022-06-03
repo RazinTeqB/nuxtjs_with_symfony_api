@@ -3,7 +3,9 @@
     <h1>Students</h1>
     <ul>
       <li class="d-flex align-item-center flex-row position-relative">
-        <nuxt-link class="header-links stretched-link text-decoration-none" to="/list"
+        <nuxt-link
+          class="header-links stretched-link text-decoration-none"
+          to="/list"
           >List<span>
             <small class="d-flex align-items-center"
               >List all students</small
@@ -11,8 +13,10 @@
           ></nuxt-link
         >
       </li>
-      <li class="d-flex align-item-center flex-row position-relative">
-        <nuxt-link class="header-links stretched-link text-decoration-none" to="/create"
+      <li class="d-flex align-item-center flex-row position-relative ml-4">
+        <nuxt-link
+          class="header-links stretched-link text-decoration-none"
+          to="/create"
           >Create<span>
             <small class="d-flex align-items-center"
               >Create New Student</small
@@ -39,9 +43,13 @@ ul li {
   width: 150px;
   padding: 10px;
   transition: 0.3s ease;
-  border-radius: 6px;
+  float: left;
+  border-bottom: 1px solid #39b982;
+  border-radius: 0px;
 }
+
 ul li:hover {
+  border-radius: 6px;
   border: 1px solid #39b982;
   box-shadow: 1px 1px 10px 0px #39b982b3;
 }

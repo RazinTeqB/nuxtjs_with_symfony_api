@@ -221,6 +221,8 @@ export default {
             if (pageNumber > 1) {
               this.currentPage = pageNumber - 1
               this.getStudents(this.currentPage)
+            } else {
+              this.updateStudents(response.data)
             }
           } else {
             this.updateStudents(response.data)
