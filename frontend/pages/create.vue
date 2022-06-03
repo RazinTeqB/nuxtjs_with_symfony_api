@@ -146,7 +146,7 @@ export default {
         .then((response) => {
           if (response.data.email !== '') {
             alert('Student created successfully')
-            this.$router.push('/')
+            this.$router.push('/list')
           }
         })
         .catch((rspError) => {

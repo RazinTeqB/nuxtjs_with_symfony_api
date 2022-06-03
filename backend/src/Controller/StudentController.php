@@ -14,20 +14,21 @@ final class StudentController extends AbstractController
 {
     public function __invoke(Request $request,  FileUploader $fileUploader): Student
     {
-        $uploadFile = $request->files->get("image");
-        if (!$uploadFile) {
-            throw new BadRequestHttpException("No file uploaded");
-        }
-
         $student = new Student();
-        $student->setName($request->get("name"));
-        $student->setEmail($request->get("email"));
-        $student->setGender($request->get("gender"));
-        $dob = $request->get("dob");
+        $data = json_decode($request->getContent(), true);
+
+        $student->setName($data["name"]);
+        $student->setEmail($data["email"]);
+        $student->setGender($data["gender"]);
+        $dob = $data["dob"];
         if (!empty(trim($dob))) {
             $student->setDob(new \DateTime($dob));
         }
-        $student->setImage($fileUploader->upload($uploadFile));
+        $uploadFile = $request->files->get("image");
+        if ($uploadFile) {
+            // throw new BadRequestHttpException("No file uploaded");
+            $student->setImage($fileUploader->upload($uploadFile));
+        }
 
         return $student;
     }
