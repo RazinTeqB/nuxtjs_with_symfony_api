@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <h1>Create New Student</h1>
+    <h3>Create New Student</h3>
     <form>
       <div class="row pt-3">
         <div class="col-md-3"></div>
@@ -21,7 +21,7 @@
               {{ errors.name }}
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group mt-2">
             <label for="email">Email</label>
             <input
               id="email"
@@ -36,40 +36,43 @@
               {{ errors.email }}
             </div>
           </div>
-          <div class="custom-control custom-radio custom-control-inline">
-            <input
-              id="male"
-              v-model="data.gender"
-              type="radio"
-              name="gender"
-              class="custom-control-input"
-              value="male"
-            />
-            <label class="custom-control-label" for="male">Male</label>
+          <label for="" class="form-label mt-2">Gender</label>
+          <div class="form-group d-flex flex-row justify-content-around w-50">
+            <div class="form-check">
+              <input
+                id="male"
+                v-model="data.gender"
+                type="radio"
+                name="gender"
+                class="form-check-input"
+                value="male"
+              />
+              <label class="form-check-label" for="male">Male</label>
+            </div>
+            <div class="form-check">
+              <input
+                id="female"
+                v-model="data.gender"
+                type="radio"
+                name="gender"
+                class="form-check-input"
+                value="female"
+              />
+              <label class="form-check-label" for="female">Female</label>
+            </div>
+            <div class="form-check">
+              <input
+                id="other"
+                v-model="data.gender"
+                type="radio"
+                name="gender"
+                class="form-check-input"
+                value="other"
+              />
+              <label class="form-check-label" for="other">Other</label>
+            </div>
           </div>
-          <div class="custom-control custom-radio custom-control-inline">
-            <input
-              id="female"
-              v-model="data.gender"
-              type="radio"
-              name="gender"
-              class="custom-control-input"
-              value="female"
-            />
-            <label class="custom-control-label" for="female">Female</label>
-          </div>
-          <div class="custom-control custom-radio custom-control-inline">
-            <input
-              id="other"
-              v-model="data.gender"
-              type="radio"
-              name="gender"
-              class="custom-control-input"
-              value="other"
-            />
-            <label class="custom-control-label" for="other">Other</label>
-          </div>
-          <div class="form-group">
+          <div class="form-group mt-2">
             <div
               v-if="errors.gender !== undefined && errors.gender != ''"
               class="invalid-feedback d-block"
@@ -108,10 +111,10 @@
               {{ errors.image }}
             </div>
           </div>
-          <div class="form-group mt-3">
+          <div class="form-group mt-3 text-center">
             <button
               type="submit"
-              class="btn btn-primary"
+              class="btn btn-primary btn-lg"
               :disabled="isLoading"
               @click.prevent="create"
             >

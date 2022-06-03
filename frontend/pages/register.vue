@@ -1,23 +1,21 @@
 <template>
   <section class="section">
-    <div class="container">
+    <div class="container-fluid">
       <div class="columns">
-        <div class="column is-4 is-offset-4">
+        <div class="w-50 m-auto">
           <h3 class="title has-text-centered">Register New Account</h3>
 
           <!-- <Notification v-if="errors" :message="errors" /> -->
 
           <form method="post" @submit.prevent="register">
-            <div class="field">
-              <label class="label">Email</label>
-              <div class="control">
-                <input
-                  v-model="email"
-                  type="email"
-                  class="form-control"
-                  name="email"
-                />
-              </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input
+                v-model="email"
+                type="email"
+                class="form-control"
+                name="email"
+              />
               <div
                 v-if="errors.email !== undefined && errors.email != ''"
                 class="invalid-feedback d-block"
@@ -25,27 +23,23 @@
                 {{ errors.email }}
               </div>
             </div>
-            <div class="field">
-              <label class="label">Password</label>
-              <div class="control">
-                <input
-                  v-model="password"
-                  type="password"
-                  class="form-control"
-                  name="password"
-                />
-              </div>
+            <div class="form-group mt-3">
+              <label class="form-label">Password</label>
+              <input
+                v-model="password"
+                type="password"
+                class="form-control"
+                name="password"
+              />
             </div>
-            <div class="field">
-              <label class="label">Confirm Password</label>
-              <div class="control">
-                <input
-                  v-model="confirmPassword"
-                  type="password"
-                  class="form-control"
-                  name="confirmPassword"
-                />
-              </div>
+            <div class="form-group mt-3">
+              <label class="form-label">Confirm Password</label>
+              <input
+                v-model="confirmPassword"
+                type="password"
+                class="form-control"
+                name="confirmPassword"
+              />
               <div
                 v-if="confirmPassword != '' && password !== confirmPassword"
                 class="invalid-feedback d-block"
@@ -59,7 +53,7 @@
                 {{ errors.password }}
               </div>
             </div>
-            <div class="control">
+            <div class="form-group mt-3">
               <button
                 type="submit"
                 class="btn btn-primary"

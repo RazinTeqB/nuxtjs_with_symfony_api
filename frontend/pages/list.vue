@@ -2,7 +2,8 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 p-3">
-        <nuxt-link class="btn btn-sm btn-primary float-right" to="/create"
+        <h3 style="display: inline-block;" class="">Students list </h3>
+        <nuxt-link class="btn btn-sm btn-primary float-end position-relative translate-middle top-50" to="/create"
           >Create</nuxt-link
         >
       </div>
@@ -20,6 +21,7 @@
               next-text="Next"
               last-text="Last"
               @change="getStudents"
+              class="customPaginationClass"
             ></b-pagination>
           </div>
 
@@ -29,21 +31,25 @@
             >
               <div class="flex-item">
                 <div class="form-group form-inline my-auto">
-                  <label for="perPageCount">Per Page</label>
-                  <select
-                    id="perPageCount"
-                    v-model="search.perPage"
-                    name="search[perPage]"
-                    class="form-control mr-4"
-                    style="width: 70px"
-                    @change="searchFilter"
-                  >
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <!-- <option :value="perPage * totalPage">All</option> -->
-                  </select>
+                  <div class="d-flex flex-row justify-content-between align-items-center">
+                    <label for="perPageCount" class="form-label"
+                      >Per Page</label
+                    >
+                    <select
+                      id="perPageCount"
+                      v-model="search.perPage"
+                      name="search[perPage]"
+                      class="form-control me-4 ms-2 h-75"
+                      style="width: 70px"
+                      @change="searchFilter"
+                    >
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                      <!-- <option :value="perPage * totalPage">All</option> -->
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="flex-item">
@@ -264,5 +270,12 @@ ul.pagination {
 }
 .uploadImg:hover {
   transform: scale(1.5);
+}
+</style>
+// custom style applied to the bootstrap-vue pagination component (because component not yet available in bootstrap v5)
+<style>
+.customPaginationClass button.page-link {
+  padding-top: 9px !important;
+  padding-bottom: 9px !important;
 }
 </style>
