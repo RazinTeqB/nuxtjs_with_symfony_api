@@ -15,12 +15,10 @@ final class StudentController extends AbstractController
     public function __invoke(Request $request,  FileUploader $fileUploader): Student
     {
         $student = new Student();
-        $data = json_decode($request->getContent(), true);
-
-        $student->setName($data["name"]);
-        $student->setEmail($data["email"]);
-        $student->setGender($data["gender"]);
-        $dob = $data["dob"];
+        $student->setName($request->get("name"));
+        $student->setEmail($request->get("email"));
+        $student->setGender($request->get("gender"));
+        $dob = $request->get("dob");
         if (!empty(trim($dob))) {
             $student->setDob(new \DateTime($dob));
         }

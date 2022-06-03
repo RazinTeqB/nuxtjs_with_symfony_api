@@ -48,10 +48,15 @@ export default {
     build: {},
 
     axios: {
-        baseURL: process.env.API_URL || "http://localhost:8000/",
+        baseURL: process.env.API_URL || "http://localhost:8000",
         headers: {
             Accept: 'application/ld+json'
         }
+    },
+
+    publicRuntimeConfig: {
+        API_URL: process.env.API_URL || "http://localhost:8000",
+        uploadPath: '/uploads'
     },
 
     auth: {

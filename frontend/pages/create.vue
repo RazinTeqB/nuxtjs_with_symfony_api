@@ -94,6 +94,21 @@
             </div>
           </div>
           <div class="form-group mt-3">
+            <label for="image">Image Upload</label>
+            <input
+              id="image"
+              type="file"
+              class="form-control"
+              @change="handleFileUpload($event)"
+            />
+            <div
+              v-if="errors.image !== undefined && errors.image != ''"
+              class="invalid-feedback d-block"
+            >
+              {{ errors.image }}
+            </div>
+          </div>
+          <div class="form-group mt-3">
             <button
               type="submit"
               class="btn btn-primary"
@@ -127,6 +142,7 @@ export default {
         email: '',
         gender: '',
         dob: '',
+        image: '',
       },
       errors: '',
       isLoading: false,
@@ -139,10 +155,26 @@ export default {
   },
   computed: {},
   methods: {
+    handleFileUpload(event) {
+      this.data.file = event.target.files[0]
+    },
     async create() {
       this.isLoading = true
+      const formData = new FormData()
+      formData.append('name', this.data.name)
+      formData.append('email', this.data.email)
+      formData.append('gender', this.data.gender)
+      formData.append('dob', this.data.dob)
+      formData.append('image', this.data.file)
+
       await this.$axios
-        .post('/api/students', this.data)
+        .post('/api/students', formData, {
+          headers: {
+            "accept": 'application/json',
+            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'multipart/form-data',
+          },
+        })
         .then((response) => {
           if (response.data.email !== '') {
             alert('Student created successfully')
