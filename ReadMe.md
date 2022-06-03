@@ -2,8 +2,8 @@
 
   - [Installation Guide](Installation.md)
   - [Api documentation and test api with swagger ui](ApiUI.md)
-  - [Nuxt Frontend Demo video](NuxtJs-Frontend-demo.webm)
-  - [Test Link](https://user-images.githubusercontent.com/98730633/171845788-33d6bd53-2c6a-4f54-85c9-0a3b60be161c.mp4)
+  - [Nuxt Frontend Demo video (download here)](NuxtJs-Frontend-demo.webm)
+  - [Nuxt Frontend Demo video (view online)](https://user-images.githubusercontent.com/98730633/171845788-33d6bd53-2c6a-4f54-85c9-0a3b60be161c.mp4)
 
 
 
