@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Students</h1>
+    <h3>Students</h3>
     <ul>
       <li class="d-flex align-item-center flex-row position-relative">
         <nuxt-link
@@ -13,7 +13,7 @@
           ></nuxt-link
         >
       </li>
-      <li class="d-flex align-item-center flex-row position-relative ml-4">
+      <li class="d-flex align-item-center flex-row position-relative ms-4">
         <nuxt-link
           class="header-links stretched-link text-decoration-none"
           to="/create"

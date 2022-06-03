@@ -1,58 +1,48 @@
 <template>
   <section class="section">
-    <div class="container">
-      <div class="columns">
-        <div class="column is-4 is-offset-4">
-          <h3 class="title has-text-centered">
-            Welcome back! Login Into Your Account
-          </h3>
+    <div class="container-fluid">
+      <div class="w-50 m-auto">
+        <h3 class="title has-text-centered">
+          Welcome back! Login Into Your Account
+        </h3>
 
-          <Notification v-if="error" :message="error.data.message" />
+        <Notification v-if="error" :message="error.data.message" />
 
-          <form method="post" @submit.prevent="login">
-            <div class="field">
-              <label class="label">Email</label>
-              <div class="control">
-                <input
-                  v-model="email"
-                  type="email"
-                  class="form-control"
-                  name="email"
-                />
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Password</label>
-              <div class="control">
-                <input
-                  v-model="password"
-                  type="password"
-                  class="form-control"
-                  name="password"
-                />
-              </div>
-            </div>
-            <div class="control">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                :disabled="isLoading"
-              >
-                <font-awesome-icon
-                  v-if="isLoading == true ? true : false"
-                  :icon="['fas', 'spinner']"
-                  class="fa-spin"
-                />
-                Log In
-              </button>
-            </div>
-          </form>
-          <div class="has-text-centered" style="margin-top: 20px">
-            <p>
-              Don't have an account?
-              <nuxt-link to="/register">Register</nuxt-link>
-            </p>
+        <form method="post" @submit.prevent="login">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input
+              v-model="email"
+              type="email"
+              class="form-control"
+              name="email"
+            />
           </div>
+          <div class="form-group mt-3">
+            <label class="form-label">Password</label>
+            <input
+              v-model="password"
+              type="password"
+              class="form-control"
+              name="password"
+            />
+          </div>
+          <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary" :disabled="isLoading">
+              <font-awesome-icon
+                v-if="isLoading == true ? true : false"
+                :icon="['fas', 'spinner']"
+                class="fa-spin"
+              />
+              Log In
+            </button>
+          </div>
+        </form>
+        <div class="has-text-centered" style="margin-top: 20px">
+          <p>
+            Don't have an account?
+            <nuxt-link to="/register">Register</nuxt-link>
+          </p>
         </div>
       </div>
     </div>
