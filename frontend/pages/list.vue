@@ -109,6 +109,7 @@
               <th>Email</th>
               <th>Gender</th>
               <th>Dob</th>
+              <th>Image</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -120,6 +121,15 @@
               <td>{{ student.email }}</td>
               <td>{{ student.gender }}</td>
               <td>{{ student.dob }}</td>
+              <td>
+                <!-- {{ student.image !== '' ? uploadPath + student.image : '' }} -->
+                <img
+                  v-if="student.image !== '' && student.image !== undefined"
+                  :src="uploadPath + student.image"
+                  alt="Image Not Found"
+                  class="uploadImg"
+                />
+              </td>
               <td>
                 <nuxt-link :to="'/update/' + student.id">Update</nuxt-link>
                 <a class="" href="#" @click.prevent="deleteStudent(student.id)"
@@ -152,6 +162,7 @@ export default {
         perPage: 10,
       },
       searchQueryString: '',
+      uploadPath: '',
     }
   },
   head() {
@@ -167,6 +178,7 @@ export default {
   },
 
   mounted() {
+    this.uploadPath = this.$config.API_URL + this.$config.uploadPath + '/'
     this.getStudents()
     this.searchFilter = debounce(this.searchFilter, 300)
     // console.log(this.$axios.defaults.baseURL)
@@ -202,9 +214,17 @@ export default {
           }
         )
         .then((response) => {
-          // this.students = response.data
-          this.updateStudents(response.data)
-          return response.data
+          if (
+            response.data['hydra:member'].length === undefined ||
+            response.data['hydra:member'].length === 0
+          ) {
+            if (pageNumber > 1) {
+              this.currentPage = pageNumber - 1
+              this.getStudents(this.currentPage)
+            }
+          } else {
+            this.updateStudents(response.data)
+          }
         })
         .catch((error) => {
           console.error(error)
@@ -234,5 +254,13 @@ export default {
 ul.pagination {
   margin-bottom: auto;
   margin-top: auto;
+}
+.uploadImg {
+  height: 50px;
+  width: 50px;
+  transition: 0.3s ease;
+}
+.uploadImg:hover {
+  transform: scale(1.5);
 }
 </style>
