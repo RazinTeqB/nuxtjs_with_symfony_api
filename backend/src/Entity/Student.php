@@ -131,7 +131,7 @@ class Student
     #[Groups(["read"])]
     private $updated;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'students', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'students', cascade: ['persist'])]
     #[ORM\JoinColumn(name: "UserId", referencedColumnName: "id", nullable: true, onDelete: 'SET NULL')]
     #[Groups(["read", "write"])]
     private $user;

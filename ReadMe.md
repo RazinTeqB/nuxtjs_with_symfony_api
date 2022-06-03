@@ -30,7 +30,7 @@
 
 - ### Step 2.6: Run the database fixture to load default user
 
-  `php bin/console doctrine:fixtures:load`
+  `echo yes | php bin/console doctrine:fixtures:load`
 
 - ### Step 2.7: Generate JWT Public/Secret Key [For more info visit [LexikJWTAuthenticationBundle Installation](https://github.com/lexik/LexikJWTAuthenticationBundle/blob/2.x/Resources/doc/index.rst#installation)]
 
