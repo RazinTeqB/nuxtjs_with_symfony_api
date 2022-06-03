@@ -115,7 +115,7 @@
               {{ errors.dob }}
             </div>
           </div>
-          <div class="form-group mt-3 text-center">
+          <div class="form-group mt-3">
             <button
               type="submit"
               class="btn btn-primary btn-lg"
@@ -192,7 +192,7 @@ export default {
           this.data.email = response.data.email
           this.data.dob = response.data.dob
           this.data.gender = response.data.gender.toLowerCase()
-          this.data.user = response.data.user['@id']
+          this.data.user = response.data['@id']
         })
         .catch((error) => {
           console.error(error)
