@@ -22,8 +22,8 @@
               prev-text="Prev"
               next-text="Next"
               last-text="Last"
-              @change="getStudents"
               class="customPaginationClass"
+              @change="getStudents"
             ></b-pagination>
           </div>
 
@@ -135,92 +135,92 @@
         <table class="table">
           <thead>
             <tr>
-              <th @click="sortOrder('id')" class="sortable">
+              <th class="sortable" @click="sortOrder('id')">
                 #
                 <font-awesome-icon
-                  v-if="this.order.id === ''"
+                  v-if="order.id === ''"
                   :icon="['fas', 'sort']"
                   class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
-                  v-else-if="this.order.id === 'ASC'"
+                  v-else-if="order.id === 'ASC'"
                   :icon="['fas', 'sort-up']"
                   class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
-                  v-else-if="this.order.id === 'DESC'"
+                  v-else-if="order.id === 'DESC'"
                   :icon="['fas', 'sort-down']"
                   class="float-end table-sort-icon"
                 />
               </th>
-              <th @click="sortOrder('name')" class="sortable">
+              <th class="sortable" @click="sortOrder('name')">
                 Name
                 <font-awesome-icon
-                  v-if="this.order.name === ''"
+                  v-if="order.name === ''"
                   :icon="['fas', 'sort']"
                   class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
-                  v-else-if="this.order.name === 'ASC'"
+                  v-else-if="order.name === 'ASC'"
                   :icon="['fas', 'sort-up']"
                   class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
-                  v-else-if="this.order.name === 'DESC'"
+                  v-else-if="order.name === 'DESC'"
                   :icon="['fas', 'sort-down']"
                   class="float-end table-sort-icon"
                 />
               </th>
-              <th @click="sortOrder('email')" class="sortable">
+              <th class="sortable" @click="sortOrder('email')">
                 Email
                 <font-awesome-icon
-                  v-if="this.order.email === ''"
+                  v-if="order.email === ''"
                   :icon="['fas', 'sort']"
                   class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
-                  v-else-if="this.order.email === 'ASC'"
+                  v-else-if="order.email === 'ASC'"
                   :icon="['fas', 'sort-up']"
                   class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
-                  v-else-if="this.order.email === 'DESC'"
+                  v-else-if="order.email === 'DESC'"
                   :icon="['fas', 'sort-down']"
                   class="float-end table-sort-icon"
                 />
               </th>
-              <th @click="sortOrder('gender')" class="sortable">
+              <th class="sortable" @click="sortOrder('gender')">
                 Gender
                 <font-awesome-icon
-                  v-if="this.order.gender === ''"
+                  v-if="order.gender === ''"
                   :icon="['fas', 'sort']"
                   class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
-                  v-else-if="this.order.gender === 'ASC'"
+                  v-else-if="order.gender === 'ASC'"
                   :icon="['fas', 'sort-up']"
                   class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
-                  v-else-if="this.order.gender === 'DESC'"
+                  v-else-if="order.gender === 'DESC'"
                   :icon="['fas', 'sort-down']"
                   class="float-end table-sort-icon"
                 />
               </th>
-              <th @click="sortOrder('dob')" class="sortable">
+              <th class="sortable" @click="sortOrder('dob')">
                 Dob
                 <font-awesome-icon
-                  v-if="this.order.dob === ''"
+                  v-if="order.dob === ''"
                   :icon="['fas', 'sort']"
                   class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
-                  v-else-if="this.order.dob === 'ASC'"
+                  v-else-if="order.dob === 'ASC'"
                   :icon="['fas', 'sort-up']"
                   class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
-                  v-else-if="this.order.dob === 'DESC'"
+                  v-else-if="order.dob === 'DESC'"
                   :icon="['fas', 'sort-down']"
                   class="float-end table-sort-icon"
                 />
@@ -319,7 +319,6 @@ export default {
     this.uploadPath = this.$config.API_URL + this.$config.uploadPath + '/'
     this.getStudents()
     this.searchFilter = debounce(this.searchFilter, 300)
-    // console.log(this.$axios.defaults.baseURL)
   },
 
   methods: {

@@ -173,7 +173,7 @@ export default {
       await this.$axios
         .post('/api/students', formData, {
           headers: {
-            "accept": 'application/json',
+            accept: 'application/json',
             'Content-Type': 'multipart/form-data',
             // 'Content-Type': 'multipart/form-data',
           },

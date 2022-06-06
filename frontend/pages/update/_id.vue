@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <h3>Update Student {{ this.data.name }}</h3>
+    <h3>Update Student {{ data.name }}</h3>
     <form>
       <div class="row pt-3">
         <div class="col-md-3"></div>
@@ -120,10 +120,10 @@
               type="submit"
               class="btn btn-primary btn-lg"
               :disabled="
-                this.data.name === '' ||
-                this.data.email === '' ||
-                this.data.dob === '' ||
-                this.data.gender === '' ||
+                data.name === '' ||
+                data.email === '' ||
+                data.dob === '' ||
+                data.gender === '' ||
                 isLoading
               "
               @click.prevent="updateStudent"
