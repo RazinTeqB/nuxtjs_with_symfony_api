@@ -17,7 +17,7 @@
             <b-pagination
               v-model="currentPage"
               :total-rows="totalPage"
-              :per-page="search.perPage"
+              :per-page="perPage"
               first-text="First"
               prev-text="Prev"
               next-text="Next"
@@ -58,8 +58,8 @@
                     >
                     <select
                       id="perPageCount"
-                      v-model="search.perPage"
-                      name="search[perPage]"
+                      v-model="perPage"
+                      name="perPage"
                       class="form-control me-4 ms-2 h-75"
                       style="width: 70px"
                       @change="searchFilter"
@@ -275,8 +275,8 @@ export default {
         name: '',
         email: '',
         gender: '',
-        perPage: 10,
       },
+      perPage: 10,
       order: {
         id: '',
         name: '',
@@ -296,7 +296,7 @@ export default {
   },
   computed: {
     totalPageFun() {
-      return Math.ceil(this.students['hydra:totalItems'] / this.search.perPage)
+      return Math.ceil(this.students['hydra:totalItems'] / this.perPage)
     },
   },
   watch: {
@@ -304,7 +304,7 @@ export default {
       this.totalPage = newData['hydra:totalItems']
       this.currentPageItemsTotal = newData['hydra:member'].length
     },
-    'search.perPage'(newVal, oldVal) {
+    perPage(newVal, oldVal) {
       this.gotoPage = ''
     },
     gotoPage(newVal, oldVal) {
@@ -325,7 +325,7 @@ export default {
   methods: {
     resetAll() {
       this.gotoPage = ''
-      this.search.perPage = 10
+      this.perPage = 10
       this.search.name = ''
       this.search.email = ''
       this.search.gender = ''
@@ -374,7 +374,7 @@ export default {
       await this.$axios
         .get(
           '/api/students?itemsPerPage=' +
-            this.search.perPage +
+            this.perPage +
             '&page=' +
             pageNumber +
             '&' +
