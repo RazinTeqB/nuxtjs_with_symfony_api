@@ -2,8 +2,10 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 p-3">
-        <h3 style="display: inline-block;" class="">Students list </h3>
-        <nuxt-link class="btn btn-sm btn-primary float-end position-relative translate-middle top-50" to="/create"
+        <h3 style="display: inline-block" class="">Students list</h3>
+        <nuxt-link
+          class="btn btn-sm btn-primary float-end position-relative translate-middle top-50"
+          to="/create"
           >Create</nuxt-link
         >
       </div>
@@ -27,11 +29,30 @@
 
           <div class="flex-item">
             <div
+              class="form-group d-flex flex-row justify-content-between align-items-center"
+            >
+              <label for="goto" class="text-nowrap me-2"> Go to </label>
+              <input
+                id="goto"
+                v-model="gotoPage"
+                type="number"
+                class="form-control"
+                placeholder="page number"
+                :max="totalPageFun"
+                @blur="searchFilter"
+              />
+            </div>
+          </div>
+
+          <div class="flex-item">
+            <div
               class="d-flex flex-row justify-content-around align-items-center"
             >
               <div class="flex-item">
                 <div class="form-group form-inline my-auto">
-                  <div class="d-flex flex-row justify-content-between align-items-center">
+                  <div
+                    class="d-flex flex-row justify-content-between align-items-center"
+                  >
                     <label for="perPageCount" class="form-label"
                       >Per Page</label
                     >
@@ -110,11 +131,96 @@
         <table class="table">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Gender</th>
-              <th>Dob</th>
+              <th @click="sortOrder('id')" class="sortable">
+                #
+                <font-awesome-icon
+                  v-if="this.order.id === ''"
+                  :icon="['fas', 'sort']"
+                  class=""
+                />
+                <font-awesome-icon
+                  v-else-if="this.order.id === 'ASC'"
+                  :icon="['fas', 'sort-up']"
+                  class=""
+                />
+                <font-awesome-icon
+                  v-else-if="this.order.id === 'DESC'"
+                  :icon="['fas', 'sort-down']"
+                  class=""
+                />
+              </th>
+              <th @click="sortOrder('name')" class="sortable">
+                Name
+                <font-awesome-icon
+                  v-if="this.order.name === ''"
+                  :icon="['fas', 'sort']"
+                  class=""
+                />
+                <font-awesome-icon
+                  v-else-if="this.order.name === 'ASC'"
+                  :icon="['fas', 'sort-up']"
+                  class=""
+                />
+                <font-awesome-icon
+                  v-else-if="this.order.name === 'DESC'"
+                  :icon="['fas', 'sort-down']"
+                  class=""
+                />
+              </th>
+              <th @click="sortOrder('email')" class="sortable">
+                Email
+                <font-awesome-icon
+                  v-if="this.order.email === ''"
+                  :icon="['fas', 'sort']"
+                  class=""
+                />
+                <font-awesome-icon
+                  v-else-if="this.order.email === 'ASC'"
+                  :icon="['fas', 'sort-up']"
+                  class=""
+                />
+                <font-awesome-icon
+                  v-else-if="this.order.email === 'DESC'"
+                  :icon="['fas', 'sort-down']"
+                  class=""
+                />
+              </th>
+              <th @click="sortOrder('gender')" class="sortable">
+                Gender
+                <font-awesome-icon
+                  v-if="this.order.gender === ''"
+                  :icon="['fas', 'sort']"
+                  class=""
+                />
+                <font-awesome-icon
+                  v-else-if="this.order.gender === 'ASC'"
+                  :icon="['fas', 'sort-up']"
+                  class=""
+                />
+                <font-awesome-icon
+                  v-else-if="this.order.gender === 'DESC'"
+                  :icon="['fas', 'sort-down']"
+                  class=""
+                />
+              </th>
+              <th @click="sortOrder('dob')" class="sortable">
+                Dob
+                <font-awesome-icon
+                  v-if="this.order.dob === ''"
+                  :icon="['fas', 'sort']"
+                  class=""
+                />
+                <font-awesome-icon
+                  v-else-if="this.order.dob === 'ASC'"
+                  :icon="['fas', 'sort-up']"
+                  class=""
+                />
+                <font-awesome-icon
+                  v-else-if="this.order.dob === 'DESC'"
+                  :icon="['fas', 'sort-down']"
+                  class=""
+                />
+              </th>
               <th>Image</th>
               <th>Action</th>
             </tr>
@@ -167,8 +273,16 @@ export default {
         gender: '',
         perPage: 10,
       },
+      order: {
+        id: '',
+        name: '',
+        email: '',
+        gender: '',
+        dob: '',
+      },
       searchQueryString: '',
       uploadPath: '',
+      gotoPage: '',
     }
   },
   head() {
@@ -176,10 +290,24 @@ export default {
       title: 'List All Students',
     }
   },
+  computed: {
+    totalPageFun() {
+      return Math.ceil(this.students['hydra:totalItems'] / this.search.perPage)
+    },
+  },
   watch: {
     students(newData) {
       this.totalPage = newData['hydra:totalItems']
       this.currentPageItemsTotal = newData['hydra:member'].length
+    },
+    'search.perPage'(newVal, oldVal) {
+      this.gotoPage = ''
+    },
+    gotoPage(newVal, oldVal) {
+      if (newVal > this.totalPageFun) {
+        alert('Total ' + this.totalPageFun + ' page(s) available')
+        this.gotoPage = oldVal
+      }
     },
   },
 
@@ -191,11 +319,30 @@ export default {
   },
 
   methods: {
+    sortOrder(field) {
+      if (this.order[field] === '') {
+        this.order[field] = 'DESC'
+      } else if (this.order[field] === 'ASC') {
+        this.order[field] = 'DESC'
+      } else if (this.order[field] === 'DESC') {
+        this.order[field] = 'ASC'
+      }
+      this.searchFilter()
+    },
     searchFilter() {
+      if (this.gotoPage !== '' && this.gotoPage !== this.currentPage) {
+        this.currentPage = this.gotoPage
+      }
       this.searchQueryString = ''
       for (const key in this.search) {
         if (this.search[key] !== '') {
           this.searchQueryString += [key] + '=' + this.search[key] + '&'
+        }
+      }
+      for (const orderKey in this.order) {
+        if (this.order[orderKey] !== '') {
+          this.searchQueryString +=
+            'order[' + [orderKey] + ']' + '=' + this.order[orderKey] + '&'
         }
       }
       this.getStudents(this.currentPage, this.searchQueryString)
