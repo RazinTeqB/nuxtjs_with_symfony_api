@@ -12,6 +12,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Controller\StudentController;
@@ -78,6 +79,7 @@ use App\Controller\StudentController;
 #[ORM\HasLifecycleCallbacks]
 #[ApiFilter(DateFilter::class, properties: ['dob'])]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial', 'email' => 'ipartial', 'gender' => 'istart'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'email', 'gender', 'dob'])]
 #[UniqueEntity(fields: ['email'], message: 'This email is already in use.')]
 
 class Student
