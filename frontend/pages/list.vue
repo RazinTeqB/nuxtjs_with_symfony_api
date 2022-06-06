@@ -95,7 +95,7 @@
               name="search[name]"
               placeholder="Search by name"
               autocomplete="off"
-              @input="searchFilter"
+              @input="searchFilter()"
             />
           </div>
           <div class="col-md-3">
@@ -106,7 +106,7 @@
               name="search[email]"
               placeholder="Search by email"
               autocomplete="off"
-              @input="searchFilter"
+              @input="searchFilter()"
             />
           </div>
           <div class="col-md-3">
@@ -117,7 +117,7 @@
               name="search[gender]"
               placeholder="Search by gender"
               autocomplete="off"
-              @input="searchFilter"
+              @input="searchFilter()"
             />
           </div>
           <div class="col-md-3">
@@ -325,12 +325,17 @@ export default {
   methods: {
     resetAll() {
       this.gotoPage = ''
-      this.perPage = 10
+      this.search.perPage = 10
       this.search.name = ''
       this.search.email = ''
       this.search.gender = ''
       this.currentPage = 1
-      this.searchFilter(this.currentPage, this.searchQueryString)
+      this.order.id = ''
+      this.order.name = ''
+      this.order.email = ''
+      this.order.gender = ''
+      this.order.dob = ''
+      this.searchFilter()
     },
     sortOrder(field) {
       if (this.order[field] === '') {
@@ -340,7 +345,7 @@ export default {
       } else if (this.order[field] === 'DESC') {
         this.order[field] = 'ASC'
       }
-      this.searchFilter(this.currentPage, this.searchQueryString)
+      this.searchFilter()
     },
     searchFilter() {
       if (this.gotoPage !== '' && this.gotoPage !== this.currentPage) {
@@ -358,10 +363,11 @@ export default {
             'order[' + [orderKey] + ']' + '=' + this.order[orderKey] + '&'
         }
       }
-      this.getStudents(this.currentPage, this.searchQueryString)
+      this.getStudents(this.currentPage)
     },
-    async getStudents(currentPage, searchString = '') {
+    async getStudents(currentPage) {
       let pageNumber = 1
+      const searchString = this.searchQueryString
       if (currentPage !== undefined) {
         pageNumber = currentPage
       }
