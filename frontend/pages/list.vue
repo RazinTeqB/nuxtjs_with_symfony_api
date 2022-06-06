@@ -120,7 +120,11 @@
               @input="searchFilter"
             />
           </div>
-          <div class="col-md-3"></div>
+          <div class="col-md-3">
+            <button class="btn btn-warning float-end" @click="resetAll()">
+              Reset All
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -319,6 +323,15 @@ export default {
   },
 
   methods: {
+    resetAll() {
+      this.gotoPage = ''
+      this.perPage = 10
+      this.search.name = ''
+      this.search.email = ''
+      this.search.gender = ''
+      this.currentPage = 1
+      this.searchFilter(this.currentPage, this.searchQueryString)
+    },
     sortOrder(field) {
       if (this.order[field] === '') {
         this.order[field] = 'DESC'
@@ -327,7 +340,7 @@ export default {
       } else if (this.order[field] === 'DESC') {
         this.order[field] = 'ASC'
       }
-      this.searchFilter()
+      this.searchFilter(this.currentPage, this.searchQueryString)
     },
     searchFilter() {
       if (this.gotoPage !== '' && this.gotoPage !== this.currentPage) {
