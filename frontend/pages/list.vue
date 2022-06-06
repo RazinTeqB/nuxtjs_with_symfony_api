@@ -136,17 +136,17 @@
                 <font-awesome-icon
                   v-if="this.order.id === ''"
                   :icon="['fas', 'sort']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
                   v-else-if="this.order.id === 'ASC'"
                   :icon="['fas', 'sort-up']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
                   v-else-if="this.order.id === 'DESC'"
                   :icon="['fas', 'sort-down']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
               </th>
               <th @click="sortOrder('name')" class="sortable">
@@ -154,17 +154,17 @@
                 <font-awesome-icon
                   v-if="this.order.name === ''"
                   :icon="['fas', 'sort']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
                   v-else-if="this.order.name === 'ASC'"
                   :icon="['fas', 'sort-up']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
                   v-else-if="this.order.name === 'DESC'"
                   :icon="['fas', 'sort-down']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
               </th>
               <th @click="sortOrder('email')" class="sortable">
@@ -172,17 +172,17 @@
                 <font-awesome-icon
                   v-if="this.order.email === ''"
                   :icon="['fas', 'sort']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
                   v-else-if="this.order.email === 'ASC'"
                   :icon="['fas', 'sort-up']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
                   v-else-if="this.order.email === 'DESC'"
                   :icon="['fas', 'sort-down']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
               </th>
               <th @click="sortOrder('gender')" class="sortable">
@@ -190,17 +190,17 @@
                 <font-awesome-icon
                   v-if="this.order.gender === ''"
                   :icon="['fas', 'sort']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
                   v-else-if="this.order.gender === 'ASC'"
                   :icon="['fas', 'sort-up']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
                   v-else-if="this.order.gender === 'DESC'"
                   :icon="['fas', 'sort-down']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
               </th>
               <th @click="sortOrder('dob')" class="sortable">
@@ -208,17 +208,17 @@
                 <font-awesome-icon
                   v-if="this.order.dob === ''"
                   :icon="['fas', 'sort']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
                   v-else-if="this.order.dob === 'ASC'"
                   :icon="['fas', 'sort-up']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
                 <font-awesome-icon
                   v-else-if="this.order.dob === 'DESC'"
                   :icon="['fas', 'sort-down']"
-                  class=""
+                  class="float-end table-sort-icon"
                 />
               </th>
               <th>Image</th>

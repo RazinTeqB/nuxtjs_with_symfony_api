@@ -25,7 +25,12 @@ export default {
 </script>
 
 <style>
-
+table th.sortable {
+  cursor: pointer;
+}
+table th.sortable .table-sort-icon {
+  color: #39b982;
+}
 html {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
