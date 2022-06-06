@@ -47,7 +47,9 @@ class FileUploader
 
     public function getUrl(?string $fileName, bool $absolute = true)
     {
-        if (empty($fileName)) return null;
+        if (empty($fileName)) {
+            return null;
+        }
 
         if ($absolute) {
             return $this->urlHelper->getAbsoluteUrl($this->relativeUploadsDir . $fileName);

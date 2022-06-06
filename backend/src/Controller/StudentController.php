@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 #[AsController]
 final class StudentController extends AbstractController
 {
-    public function __invoke(Request $request,  FileUploader $fileUploader): Student
+    public function __invoke(Request $request, FileUploader $fileUploader): Student
     {
         $student = new Student();
         $student->setName($request->get("name"));
