@@ -81,8 +81,11 @@
   - username: test@email.com
   - password: 1234
 
-
 ## Possible issues
 
 - Unable to create a signed JWT from the given configuration
-    - In backend folder run `echo yes | php bin/console lexik:jwt:generate-keypair --overwrite`
+  - In backend folder run `echo yes | php bin/console lexik:jwt:generate-keypair --overwrite`
+
+## Progressive Web App
+
+To use PWA you need to use `npm run build` then `npm run start` command.

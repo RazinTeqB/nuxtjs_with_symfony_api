@@ -3,7 +3,8 @@
     <div class="container-fluid">
       <div class="w-md-50 m-auto">
         <h3 class="title has-text-centered">
-          Welcome back! <span class="d-block d-md-inline-block">Login Into Your Account</span>
+          Welcome back!
+          <span class="d-block d-md-inline-block">Login Into Your Account</span>
         </h3>
 
         <Notification v-if="error" :message="error.data.message" />
@@ -78,7 +79,20 @@ export default {
             password: this.password,
           },
         })
-
+        this.$toast.clear(' ')
+        this.$toast.success(' ', {
+          theme: 'toasted-primary',
+          position: 'top-center',
+          icon: (el) => {
+            el.innerHTML =
+              '<div class="d-flex flex-row justify-content-center align-items-center"><img src="pwa.png" /><span class="pwa-text">Ready</span></div>'
+            el.classList.add('pwa-icon')
+            return el
+          },
+          action: {
+            text: '',
+          },
+        })
         this.$router.push('/')
       } catch (e) {
         // this.error = e.response.data.message

@@ -54,8 +54,8 @@ export default {
       ogImage: 'http://localhost:3000/icon.png',
     },
     manifest: {
-      name: 'frontend',
-      short_name: 'frontend',
+      name: 'NuxtJs FrontEnd Demo',
+      short_name: 'NuxtJs FrontEnd Demo',
       description: 'NuxtJs Frontend',
       lang: 'en',
     },
@@ -63,6 +63,9 @@ export default {
       fileName: 'icon.png',
       sizes: [512],
     },
+    // workbox: {
+    //   dev: true // or use a global variable to track the current NODE_ENV, etc to determine dev mode
+    // }
   },
   toast: {
     position: 'top-right',
@@ -74,6 +77,7 @@ export default {
             toastObject.goAway(0);
         }
     },
+    iconPack: 'callback',
     register: [ // Register custom toasts
       {
         name: 'my-error',
