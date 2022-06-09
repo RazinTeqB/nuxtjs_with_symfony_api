@@ -317,7 +317,8 @@ export default {
     },
     gotoPage(newVal, oldVal) {
       if (newVal > this.totalPageFun) {
-        alert('Total ' + this.totalPageFun + ' page(s) available')
+        // alert('Total ' + this.totalPageFun + ' page(s) available')
+        this.$toast.info('Total ' + this.totalPageFun + ' page(s) available')
         this.gotoPage = oldVal
       }
     },
@@ -419,6 +420,7 @@ export default {
         await this.$axios
           .delete('/api/students/' + studentId)
           .then((response) => {
+            this.$toast.success('Student deleted successfully')
             this.getStudents(this.currentPage)
             return response.data
           })

@@ -172,7 +172,8 @@ export default {
   computed: {},
   mounted() {
     if (this.$route.params.id === '' || this.$route.params.id === undefined) {
-      alert('Student not found');
+      // alert('Student not found')
+      this.$toast.error('Student not found')
       this.$router.push('/list')
     }
     this.studentId = this.$route.params.id
@@ -193,7 +194,7 @@ export default {
         })
         .then((response) => {
           if (response.data === null || response.data.name === undefined) {
-            alert('Student not found');
+            this.$toast.error('Student not found')
             this.$router.push('/list')
           }
           this.data.name = response.data.name
@@ -228,7 +229,8 @@ export default {
         .put('/api/students/' + this.studentId, this.data)
         .then((response) => {
           if (response.data.email !== '') {
-            alert('Student updated successfully')
+            // alert('Student updated successfully')
+            this.$toast.success('Student updated successfully')
             this.$router.push('/list')
           }
         })

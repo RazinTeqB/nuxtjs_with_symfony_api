@@ -116,7 +116,8 @@ export default {
           })
           .then((response) => {
             if (response.data.email !== '') {
-              alert('User Register successfully')
+              // alert('User Register successfully')
+              this.$toast.success('User Register successfully')
               this.$auth
                 .loginWith('local', {
                   data: {

@@ -36,8 +36,28 @@ export default {
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    '@nuxtjs/toast',
   ],
-
+  toast: {
+    position: 'top-right',
+    theme: 'bubble',
+    duration: 5000,
+    action : {
+      text : 'Cancel',
+        onClick : (e, toastObject) => {
+            toastObject.goAway(0);
+        }
+    },
+    register: [ // Register custom toasts
+      {
+        name: 'my-error',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error'
+        }
+      }
+    ]
+  },
   fontawesome: {
     icons: {
       solid: true,

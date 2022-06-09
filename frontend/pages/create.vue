@@ -180,7 +180,8 @@ export default {
         })
         .then((response) => {
           if (response.data.email !== '') {
-            alert('Student created successfully')
+            // alert('Student created successfully')
+            this.$toast.success('Student created successfully')
             this.$router.push('/list')
           }
         })
