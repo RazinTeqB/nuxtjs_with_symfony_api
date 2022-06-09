@@ -28,6 +28,7 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     '@nuxtjs/fontawesome',
+    '@nuxtjs/pwa',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -38,6 +39,31 @@ export default {
     '@nuxtjs/auth-next',
     '@nuxtjs/toast',
   ],
+
+  pwa:{
+    meta: {
+      start_url: '/',
+      scope: '.',
+      useWebmanifestExtension: true,
+      display: 'standalone',
+      name: 'NuxtJs FrontEnd Demo',
+      description: 'NuxtJs Frontend',
+      theme_color: '#4DBA87',
+      lang: 'en',
+      ogHost: 'http://localhost:3000',
+      ogImage: 'http://localhost:3000/icon.png',
+    },
+    manifest: {
+      name: 'frontend',
+      short_name: 'frontend',
+      description: 'NuxtJs Frontend',
+      lang: 'en',
+    },
+    icon: {
+      fileName: 'icon.png',
+      sizes: [512],
+    },
+  },
   toast: {
     position: 'top-right',
     theme: 'bubble',
