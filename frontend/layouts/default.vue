@@ -25,6 +25,11 @@ export default {
 </script>
 
 <style>
+@media (min-width: 767px) {
+  .w-md-50 {
+    width: 50%;
+  }
+}
 table th.sortable {
   cursor: pointer;
 }
@@ -68,7 +73,7 @@ h3,
 h4,
 h5,
 h6 {
-  display: flex;
+  /* display: flex; */
   align-items: center;
   font-family: 'Montserrat', sans-serif;
 }

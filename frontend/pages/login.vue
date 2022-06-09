@@ -1,9 +1,9 @@
 <template>
   <section class="section">
     <div class="container-fluid">
-      <div class="w-50 m-auto">
+      <div class="w-md-50 m-auto">
         <h3 class="title has-text-centered">
-          Welcome back! Login Into Your Account
+          Welcome back! <span class="d-block d-md-inline-block">Login Into Your Account</span>
         </h3>
 
         <Notification v-if="error" :message="error.data.message" />

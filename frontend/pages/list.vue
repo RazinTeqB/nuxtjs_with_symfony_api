@@ -11,7 +11,7 @@
       </div>
       <div class="col-md-12 border-bottom rounded">
         <div
-          class="container-fluid my-4 d-flex flex-row justify-content-between align-items-center"
+          class="container-fluid my-4 d-flex flex-md-row flex-column justify-content-between align-items-center"
         >
           <div class="flex-item">
             <b-pagination
@@ -27,7 +27,7 @@
             ></b-pagination>
           </div>
 
-          <div class="flex-item">
+          <div class="flex-item my-3 my-md-0">
             <div
               class="form-group d-flex flex-row justify-content-between align-items-center"
             >
@@ -48,11 +48,6 @@
             <div
               class="d-flex flex-row justify-content-around align-items-center"
             >
-              <div class="flex-item">
-                <div class="form-group form-inline my-auto">
-                  <div
-                    class="d-flex flex-row justify-content-between align-items-center"
-                  >
                     <label for="perPageCount" class="form-label"
                       >Per Page</label
                     >
@@ -70,9 +65,6 @@
                       <option value="100">100</option>
                       <!-- <option :value="perPage * totalPage">All</option> -->
                     </select>
-                  </div>
-                </div>
-              </div>
               <div class="flex-item">
                 Showing
                 <a href="javascript:void()" class="">{{
@@ -91,7 +83,7 @@
             <input
               v-model="search.name"
               type="text"
-              class="form-control"
+              class="form-control mt-2 mt-md-0"
               name="search[name]"
               placeholder="Search by name"
               autocomplete="off"
@@ -102,7 +94,7 @@
             <input
               v-model="search.email"
               type="text"
-              class="form-control"
+              class="form-control mt-2 mt-md-0"
               name="search[email]"
               placeholder="Search by email"
               autocomplete="off"
@@ -113,15 +105,15 @@
             <input
               v-model="search.gender"
               type="text"
-              class="form-control"
+              class="form-control mt-2 mt-md-0"
               name="search[gender]"
               placeholder="Search by gender"
               autocomplete="off"
               @input="searchFilter()"
             />
           </div>
-          <div class="col-md-3">
-            <button class="btn btn-warning float-end" @click="resetAll()">
+          <div class="col-md-3  mt-2 mt-md-0 text-center text-md-end">
+            <button class="btn btn-warning" @click="resetAll()">
               Reset All
             </button>
           </div>
@@ -131,7 +123,7 @@
 
     <!-- <div style="max-height: 500px; overflow-y: scroll"> -->
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12" style="overflow-x: scroll;">
         <table class="table">
           <thead>
             <tr>
@@ -247,18 +239,20 @@
                 />
               </td>
               <td>
-                <nuxt-link :to="'/update/' + student.id">
-                  <font-awesome-icon
-                    :icon="['fas', 'pencil']"
-                    class="me-3 fs-3"
-                  />
-                </nuxt-link>
-                <a class="" href="#" @click.prevent="deleteStudent(student.id)">
-                  <font-awesome-icon
-                    :icon="['fas', 'trash']"
-                    class="me-3 fs-3"
-                  />
-                </a>
+                <div class="d-flex flex-row justify-content-around">
+                  <nuxt-link :to="'/update/' + student.id">
+                    <font-awesome-icon
+                      :icon="['fas', 'pencil']"
+                      class="fs-3 flex-item me-3"
+                    />
+                  </nuxt-link>
+                  <a class="" href="#" @click.prevent="deleteStudent(student.id)">
+                    <font-awesome-icon
+                      :icon="['fas', 'trash']"
+                      class="fs-3 flex-item"
+                    />
+                  </a>
+                </div>
               </td>
             </tr>
           </tbody>

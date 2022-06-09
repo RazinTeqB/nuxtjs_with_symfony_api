@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <h3>Create New Student</h3>
+    <h3 class="my-3 my-md-1">Create New Student</h3>
     <form>
       <div class="row pt-3">
         <div class="col-md-3"></div>

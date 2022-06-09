@@ -2,7 +2,7 @@
   <section class="section">
     <div class="container-fluid">
       <div class="columns">
-        <div class="w-50 m-auto">
+        <div class="w-md-50 m-auto">
           <h3 class="title has-text-centered">Register New Account</h3>
 
           <!-- <Notification v-if="errors" :message="errors" /> -->
