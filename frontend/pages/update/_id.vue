@@ -171,6 +171,10 @@ export default {
   },
   computed: {},
   mounted() {
+    if (this.$route.params.id === '' || this.$route.params.id === undefined) {
+      alert('Student not found');
+      this.$router.push('/list')
+    }
     this.studentId = this.$route.params.id
     if (this.studentId) {
       this.isLoading = true
@@ -188,6 +192,10 @@ export default {
           },
         })
         .then((response) => {
+          if (response.data === null || response.data.name === undefined) {
+            alert('Student not found');
+            this.$router.push('/list')
+          }
           this.data.name = response.data.name
           this.data.email = response.data.email
           this.data.dob = response.data.dob
