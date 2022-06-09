@@ -126,6 +126,20 @@ export default {
                   },
                 })
                 .then(() => {
+                  this.$toast.clear(' ')
+                  this.$toast.success(' ', {
+                    theme: 'toasted-primary',
+                    position: 'top-center',
+                    icon: (el) => {
+                      el.innerHTML =
+                        '<div class="d-flex flex-row justify-content-center align-items-center"><img src="pwa.png" /><span class="pwa-text">Ready</span></div>'
+                      el.classList.add('pwa-icon')
+                      return el
+                    },
+                    action: {
+                      text: '',
+                    },
+                  });
                   this.$router.push('/')
                 })
             }
