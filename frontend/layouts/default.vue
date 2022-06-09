@@ -25,6 +25,27 @@ export default {
 </script>
 
 <style>
+.toasted.bubble.success > .pwa-icon {
+  width: 80px;
+  justify-content: center;
+}
+.pwa-icon {
+  height: auto;
+  width: 65px;
+  margin-left: 1.3rem;
+}
+.pwa-text {
+  color: #3d3d3d;
+  font-weight: bolder;
+  font-size: 1.3em;
+  font-style: normal;
+  margin-left: 2px;
+}
+@media (min-width: 767px) {
+  .w-md-50 {
+    width: 50%;
+  }
+}
 table th.sortable {
   cursor: pointer;
 }
@@ -68,7 +89,7 @@ h3,
 h4,
 h5,
 h6 {
-  display: flex;
+  /* display: flex; */
   align-items: center;
   font-family: 'Montserrat', sans-serif;
 }

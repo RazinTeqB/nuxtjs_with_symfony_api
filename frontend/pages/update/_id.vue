@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <h3>Update Student {{ data.name }}</h3>
+    <h3 class="my-3 my-md-1">Update Student {{ data.name }}</h3>
     <form>
       <div class="row pt-3">
         <div class="col-md-3"></div>
@@ -171,6 +171,11 @@ export default {
   },
   computed: {},
   mounted() {
+    if (this.$route.params.id === '' || this.$route.params.id === undefined) {
+      // alert('Student not found')
+      this.$toast.error('Student not found')
+      this.$router.push('/list')
+    }
     this.studentId = this.$route.params.id
     if (this.studentId) {
       this.isLoading = true
@@ -188,6 +193,10 @@ export default {
           },
         })
         .then((response) => {
+          if (response.data === null || response.data.name === undefined) {
+            this.$toast.error('Student not found')
+            this.$router.push('/list')
+          }
           this.data.name = response.data.name
           this.data.email = response.data.email
           this.data.dob = response.data.dob
@@ -220,7 +229,8 @@ export default {
         .put('/api/students/' + this.studentId, this.data)
         .then((response) => {
           if (response.data.email !== '') {
-            alert('Student updated successfully')
+            // alert('Student updated successfully')
+            this.$toast.success('Student updated successfully')
             this.$router.push('/list')
           }
         })

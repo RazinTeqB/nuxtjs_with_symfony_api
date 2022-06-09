@@ -71,4 +71,16 @@ export default {
 .nav a {
   display: inline-block;
 }
+
+@media (max-width: 425px) {
+  .brand {
+    font-size: 1em;
+  }
+  .header-links {
+    font-size: 0.8em;
+  }
+  .header-links::after {
+    margin-left: 8px;
+  }
+}
 </style>

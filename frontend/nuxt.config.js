@@ -28,6 +28,7 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     '@nuxtjs/fontawesome',
+    '@nuxtjs/pwa',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -36,8 +37,57 @@ export default {
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    '@nuxtjs/toast',
   ],
 
+  pwa:{
+    meta: {
+      start_url: '/',
+      scope: '.',
+      useWebmanifestExtension: true,
+      display: 'standalone',
+      name: 'NuxtJs FrontEnd Demo',
+      description: 'NuxtJs Frontend',
+      theme_color: '#4DBA87',
+      lang: 'en',
+      ogHost: 'http://localhost:3000',
+      ogImage: 'http://localhost:3000/icon.png',
+    },
+    manifest: {
+      name: 'NuxtJs FrontEnd Demo',
+      short_name: 'NuxtJs FrontEnd Demo',
+      description: 'NuxtJs Frontend',
+      lang: 'en',
+    },
+    icon: {
+      fileName: 'icon.png',
+      sizes: [512],
+    },
+    // workbox: {
+    //   dev: true // or use a global variable to track the current NODE_ENV, etc to determine dev mode
+    // }
+  },
+  toast: {
+    position: 'top-right',
+    theme: 'bubble',
+    duration: 5000,
+    action : {
+      text : 'Cancel',
+        onClick : (e, toastObject) => {
+            toastObject.goAway(0);
+        }
+    },
+    iconPack: 'callback',
+    register: [ // Register custom toasts
+      {
+        name: 'my-error',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error'
+        }
+      }
+    ]
+  },
   fontawesome: {
     icons: {
       solid: true,

@@ -2,7 +2,7 @@
   <section class="section">
     <div class="container-fluid">
       <div class="columns">
-        <div class="w-50 m-auto">
+        <div class="w-md-50 m-auto">
           <h3 class="title has-text-centered">Register New Account</h3>
 
           <!-- <Notification v-if="errors" :message="errors" /> -->
@@ -116,7 +116,8 @@ export default {
           })
           .then((response) => {
             if (response.data.email !== '') {
-              alert('User Register successfully')
+              // alert('User Register successfully')
+              this.$toast.success('User Register successfully')
               this.$auth
                 .loginWith('local', {
                   data: {
@@ -125,6 +126,20 @@ export default {
                   },
                 })
                 .then(() => {
+                  this.$toast.clear(' ')
+                  this.$toast.success(' ', {
+                    theme: 'toasted-primary',
+                    position: 'top-center',
+                    icon: (el) => {
+                      el.innerHTML =
+                        '<div class="d-flex flex-row justify-content-center align-items-center"><img src="pwa.png" /><span class="pwa-text">Ready</span></div>'
+                      el.classList.add('pwa-icon')
+                      return el
+                    },
+                    action: {
+                      text: '',
+                    },
+                  });
                   this.$router.push('/')
                 })
             }
