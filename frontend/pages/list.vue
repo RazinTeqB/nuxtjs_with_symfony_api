@@ -247,10 +247,18 @@
                 />
               </td>
               <td>
-                <nuxt-link :to="'/update/' + student.id">Update</nuxt-link>
-                <a class="" href="#" @click.prevent="deleteStudent(student.id)"
-                  >Delete</a
-                >
+                <nuxt-link :to="'/update/' + student.id">
+                  <font-awesome-icon
+                    :icon="['fas', 'pencil']"
+                    class="me-3 fs-3"
+                  />
+                </nuxt-link>
+                <a class="" href="#" @click.prevent="deleteStudent(student.id)">
+                  <font-awesome-icon
+                    :icon="['fas', 'trash']"
+                    class="me-3 fs-3"
+                  />
+                </a>
               </td>
             </tr>
           </tbody>
