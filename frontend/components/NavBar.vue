@@ -12,18 +12,25 @@
       >
         {{ loggedInUser }}
       </a>
+      <ColorModePicker />
     </nav>
     <nav v-else>
       <nuxt-link class="header-links" to="/login">Login</nuxt-link>
       <nuxt-link class="header-links" to="/register">Register</nuxt-link>
+      <ColorModePicker />
     </nav>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import ColorModePicker from '@/components/ColorModePicker'
+
 export default {
   name: 'NavBar',
   // layout: '../layout/default',
+  components: {
+    ColorModePicker,
+  },
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser']),
   },
