@@ -1,4 +1,5 @@
 export default {
+  // target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'frontend',
@@ -34,7 +35,7 @@ export default {
     '@nuxtjs/color-mode',
     '@nuxtjs/svg',
   ],
-  // ssr: false,
+  // ssr: true,
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
@@ -58,7 +59,6 @@ export default {
       start_url: '/',
       scope: '.',
       useWebmanifestExtension: true,
-      display: 'standalone',
       name: 'NuxtJs FrontEnd Demo',
       description: 'NuxtJs Frontend',
       theme_color: '#4DBA87',
@@ -71,6 +71,7 @@ export default {
       short_name: 'NuxtJs FrontEnd Demo',
       description: 'NuxtJs Frontend',
       lang: 'en',
+      display: 'standalone',
     },
     icon: {
       fileName: 'icon.png',
