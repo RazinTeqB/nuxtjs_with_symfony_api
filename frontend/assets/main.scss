@@ -64,3 +64,13 @@ a {
 .form-group label {
     color: var(--color);
 }
+
+.dropdown-menu {
+    color: var(--color-secondary);
+    background-color: var(--bg-secondary);
+}
+
+.dropdown-menu a:hover {
+    background-color: #67b895;
+    color: black !important;
+}

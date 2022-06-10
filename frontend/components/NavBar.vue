@@ -84,14 +84,14 @@ li.header-links,
 li.header-links a.nav-link,
 li.header-links * {
   border: none;
-  color: #39b982 !important;
+  color: #39b982;
   text-decoration: none;
 }
 li.header-links:active,
 li.header-links:focus,
 li.header-links:focus-visible
  {
-  border: none;
+  border: none !important;
 }
 .brand {
   font-family: 'Montserrat', sans-serif;
