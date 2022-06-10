@@ -198,7 +198,7 @@ button:-moz-focusring,
   outline: 2px solid #39b982;
 }
 label {
-  color: rgba(0, 0, 0, 0.5);
+  /* color: rgba(0, 0, 0, 0.5); */
   font-weight: 700;
 }
 input,
