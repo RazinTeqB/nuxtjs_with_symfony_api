@@ -5,7 +5,7 @@
         <h3 style="display: inline-block" class="">Students list</h3>
         <nuxt-link
           class="btn btn-sm btn-primary float-end position-relative translate-middle top-50"
-          to="/create"
+          to="/students/create"
           >Create</nuxt-link
         >
       </div>
@@ -48,23 +48,21 @@
             <div
               class="d-flex flex-row justify-content-around align-items-center"
             >
-                    <label for="perPageCount" class="form-label"
-                      >Per Page</label
-                    >
-                    <select
-                      id="perPageCount"
-                      v-model="perPage"
-                      name="perPage"
-                      class="form-control me-4 ms-2 h-75"
-                      style="width: 70px"
-                      @change="searchFilter"
-                    >
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                      <!-- <option :value="perPage * totalPage">All</option> -->
-                    </select>
+              <label for="perPageCount" class="form-label">Per Page</label>
+              <select
+                id="perPageCount"
+                v-model="perPage"
+                name="perPage"
+                class="form-control me-4 ms-2 h-75"
+                style="width: 70px"
+                @change="searchFilter"
+              >
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <!-- <option :value="perPage * totalPage">All</option> -->
+              </select>
               <div class="flex-item">
                 Showing
                 <a href="javascript:void()" class="">{{
@@ -112,7 +110,7 @@
               @input="searchFilter()"
             />
           </div>
-          <div class="col-md-3  mt-2 mt-md-0 text-center text-md-end">
+          <div class="col-md-3 mt-2 mt-md-0 text-center text-md-end">
             <button class="btn btn-warning" @click="resetAll()">
               Reset All
             </button>
@@ -123,7 +121,7 @@
 
     <!-- <div style="max-height: 500px; overflow-y: scroll"> -->
     <div class="row">
-      <div class="col-md-12" style="overflow-x: scroll;">
+      <div class="col-md-12" style="overflow-x: scroll">
         <table class="table">
           <thead>
             <tr>
@@ -218,6 +216,7 @@
                 />
               </th>
               <th>Image</th>
+              <th>Linked User</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -239,17 +238,37 @@
                 />
               </td>
               <td>
+                <nuxt-link
+                  v-if="student.user !== undefined"
+                  :to="'/users/' + student.user.id"
+                  >{{ student.user.username }}</nuxt-link
+                >
+              </td>
+              <td>
                 <div class="d-flex flex-row justify-content-around">
-                  <nuxt-link :to="'/update/' + student.id">
+                  <nuxt-link :to="'/students/' + student.id">
                     <font-awesome-icon
-                      :icon="['fas', 'pencil']"
-                      class="fs-3 flex-item me-3"
+                      :icon="['fas', 'eye']"
+                      title="Show Student"
+                      class="fs-4 flex-item me-3"
                     />
                   </nuxt-link>
-                  <a class="" href="#" @click.prevent="deleteStudent(student.id)">
+                  <nuxt-link :to="'/students/' + student.id + '/update'">
+                    <font-awesome-icon
+                      :icon="['fas', 'pencil']"
+                      title="Update Student"
+                      class="fs-4 flex-item me-3"
+                    />
+                  </nuxt-link>
+                  <a
+                    class=""
+                    href="#"
+                    title="Delete Student"
+                    @click.prevent="deleteStudent(student.id)"
+                  >
                     <font-awesome-icon
                       :icon="['fas', 'trash']"
-                      class="fs-3 flex-item"
+                      class="fs-4 flex-item"
                     />
                   </a>
                 </div>
@@ -264,8 +283,13 @@
 
 <script>
 import debounce from 'debounce'
+import { BPagination } from 'bootstrap-vue'
+
 export default {
   name: 'List',
+  components: {
+    BPagination,
+  },
   middleware: 'auth',
   data() {
     return {
@@ -441,7 +465,8 @@ ul.pagination {
   transform: scale(1.5);
 }
 </style>
-// custom style applied to the bootstrap-vue pagination component (because component not yet available in bootstrap v5)
+// custom style applied to the bootstrap-vue pagination component (because
+component not yet available in bootstrap v5)
 <style>
 .customPaginationClass button.page-link {
   padding-top: 9px !important;

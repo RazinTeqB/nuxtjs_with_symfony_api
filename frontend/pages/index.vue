@@ -5,7 +5,7 @@
       <li class="d-flex align-item-center flex-row position-relative">
         <nuxt-link
           class="header-links stretched-link text-decoration-none"
-          to="/list"
+          to="/students"
           >List<span>
             <small class="d-flex align-items-center"
               >List all students</small
@@ -16,7 +16,7 @@
       <li class="d-flex align-item-center flex-row position-relative ms-4">
         <nuxt-link
           class="header-links stretched-link text-decoration-none"
-          to="/create"
+          to="/students/create"
           >Create<span>
             <small class="d-flex align-items-center"
               >Create New Student</small

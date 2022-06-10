@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <h3 class="my-3 my-md-1">Create New Student</h3>
+    <h3 class="my-3 my-md-1">Update Student {{ data.name }}</h3>
     <form>
       <div class="row pt-3">
         <div class="col-md-3"></div>
@@ -21,7 +21,7 @@
               {{ errors.name }}
             </div>
           </div>
-          <div class="form-group mt-2">
+          <div class="form-group mt-3">
             <label for="email">Email</label>
             <input
               id="email"
@@ -36,7 +36,7 @@
               {{ errors.email }}
             </div>
           </div>
-          <label for="" class="form-label mt-2">Gender</label>
+          <label for="" class="form-label mt-3">Gender</label>
           <div class="form-group d-flex flex-row justify-content-around w-50">
             <div class="form-check">
               <input
@@ -72,7 +72,7 @@
               <label class="form-check-label" for="other">Other</label>
             </div>
           </div>
-          <div class="form-group mt-2">
+          <div class="form-group">
             <div
               v-if="errors.gender !== undefined && errors.gender != ''"
               class="invalid-feedback d-block"
@@ -97,33 +97,46 @@
             </div>
           </div>
           <div class="form-group mt-3">
-            <label for="image">Image Upload</label>
-            <input
-              id="image"
-              type="file"
-              class="form-control"
-              @change="handleFileUpload($event)"
-            />
+            <label for="user">User</label>
+            <select id="user" v-model="data.user['@id']" class="form-control">
+              <option value="">Select User</option>
+              <option
+                v-for="user in users['hydra:member']"
+                :key="user.id"
+                :value="user['@id']"
+              >
+                {{ user.username }}
+              </option>
+            </select>
             <div
-              v-if="errors.image !== undefined && errors.image != ''"
+              v-if="errors.dob !== undefined && errors.dob != ''"
               class="invalid-feedback d-block"
             >
-              {{ errors.image }}
+              {{ errors.dob }}
             </div>
           </div>
           <div class="form-group mt-3">
             <button
               type="submit"
               class="btn btn-primary btn-lg"
-              :disabled="isLoading"
-              @click.prevent="create"
+              :disabled="
+                data.name === '' ||
+                data.email === '' ||
+                data.dob === '' ||
+                data.gender === '' ||
+                isLoading
+              "
+              @click.prevent="updateStudent"
             >
               <font-awesome-icon
                 v-if="isLoading == true ? true : false"
                 :icon="['fas', 'spinner']"
                 class="fa-spin"
               />
-              Submit
+              Update
+            </button>
+            <button type="button" class="btn btn-secondary btn-lg" @click="$router.push('/students/')">
+              Go Back
             </button>
           </div>
         </div>
@@ -135,58 +148,99 @@
 
 <script>
 export default {
-  name: 'Create',
+  name: 'Update',
   middleware: 'auth',
   data() {
     return {
+      studentId: '',
       today: new Date().toISOString().split('T')[0],
       data: {
         name: '',
         email: '',
         gender: '',
         dob: '',
-        image: '',
+        user: '',
       },
       errors: '',
+      users: [],
       isLoading: false,
     }
   },
+
   head() {
     return {
-      title: 'Create new student',
+      title: 'Update Student',
     }
   },
   computed: {},
-  methods: {
-    handleFileUpload(event) {
-      this.data.file = event.target.files[0]
-    },
-    async create() {
+  mounted() {
+    if (this.$route.params.id === '' || this.$route.params.id === undefined || Number.isNaN(parseInt(this.$route.params.id))) {
+      // alert('Student not found')
+      this.$toast.error('Student not found')
+      this.$router.push('/students/')
+      return false;
+    }
+    this.studentId = this.$route.params.id
+    if (this.studentId) {
       this.isLoading = true
-      const formData = new FormData()
-      formData.append('name', this.data.name)
-      formData.append('email', this.data.email)
-      formData.append('gender', this.data.gender)
-      formData.append('dob', this.data.dob)
-      formData.append('image', this.data.file)
-
+      this.getStudent(this.studentId)
+      this.getUsers()
+      this.isLoading = false
+    }
+  },
+  methods: {
+    async getStudent(data) {
       await this.$axios
-        .post('/api/students', formData, {
+        .get('/api/students/' + data, {
           headers: {
-            accept: 'application/json',
-            'Content-Type': 'multipart/form-data',
-            // 'Content-Type': 'multipart/form-data',
+            // Accept: 'application/json',
           },
         })
         .then((response) => {
+          if (response.data === null || response.data.name === undefined) {
+            this.$toast.error('Student not found')
+            this.$router.push('/students/')
+          }
+          this.data.name = response.data.name
+          this.data.email = response.data.email
+          this.data.dob = response.data.dob
+          this.data.gender = response.data.gender.toLowerCase()
+          this.data.user = response.data.user
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    async getUsers() {
+      await this.$axios
+        .get('/api/users', {
+          headers: {
+            // Accept: 'application/json',
+          },
+        })
+        .then((response) => {
+          this.users = response.data
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    async updateStudent() {
+      this.isLoading = true
+      this.data.user = this.data.user === '' ? null : this.data.user
+
+      await this.$axios
+        .put('/api/students/' + this.studentId, this.data)
+        .then((response) => {
           if (response.data.email !== '') {
-            // alert('Student created successfully')
-            this.$toast.success('Student created successfully')
-            this.$router.push('/list')
+            // alert('Student updated successfully')
+            this.$toast.success('Student updated successfully')
+            this.$router.push('/students/')
           }
         })
         .catch((rspError) => {
           this.errors = []
+          console.log(rspError);
           if (rspError.response.data.violations === undefined) {
             console.error(rspError.response.data['hydra:description'])
           } else {
