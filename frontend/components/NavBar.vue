@@ -2,8 +2,23 @@
   <div class="nav">
     <nuxt-link to="/" class="brand">Nuxt Front-End Demo</nuxt-link>
     <nav v-if="isAuthenticated">
-      <nuxt-link class="header-links" to="/list">List</nuxt-link>
-      <nuxt-link class="header-links" to="/create">Create</nuxt-link>
+      <!-- <nuxt-link class="header-links" to="/students">List</nuxt-link> -->
+      <!-- <nuxt-link class="header-links" to="/students/create">Create</nuxt-link> -->
+      <b-nav-item-dropdown right class="header-links" ref="navdropdown">
+        <!-- Using 'button-content' slot -->
+        <template #button-content>
+          <em>User</em>
+        </template>
+        <a
+          class="dropdown-item"
+          @click.prevent="onClickNavItem('/students/create')"
+        >
+          Create
+        </a>
+        <a class="dropdown-item" @click.prevent="onClickNavItem('/students/')">
+          List
+        </a>
+      </b-nav-item-dropdown>
       <a
         class="header-links"
         href="/logout"
@@ -23,6 +38,8 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { BNavItemDropdown } from 'bootstrap-vue'
+// import 'bootstrap/dist/js/bootstrap.js'
 import ColorModePicker from '@/components/ColorModePicker'
 
 export default {
@@ -30,6 +47,12 @@ export default {
   // layout: '../layout/default',
   components: {
     ColorModePicker,
+    BNavItemDropdown,
+  },
+  head() {
+    return {
+      script: [{ src: '/bootstrap/bootstrap.min.js', type: 'text/javascript' }],
+    }
   },
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser']),
@@ -42,15 +65,33 @@ export default {
 
       this.$router.push('/login')
     },
+    onClickNavItem(redirectRoute) {
+      // Close the menu and (by passing true) return focus to the toggle button
+      this.$refs.navdropdown.hide(true)
+      this.$router.push(redirectRoute)
+    },
   },
 }
 </script>
 
 <style scoped>
-.header-links::after {
+a.header-links::after {
   content: '';
   border-right: 1px solid;
   margin-left: 5px;
+}
+li.header-links,
+li.header-links a.nav-link,
+li.header-links * {
+  border: none;
+  color: #39b982;
+  text-decoration: none;
+}
+li.header-links:active,
+li.header-links:focus,
+li.header-links:focus-visible
+ {
+  border: none !important;
 }
 .brand {
   font-family: 'Montserrat', sans-serif;
@@ -75,7 +116,8 @@ export default {
   color: #39b982;
   border-bottom: solid 2px #39b982;
 }
-.nav a {
+.nav a,
+.nav li.header-links {
   display: inline-block;
 }
 
