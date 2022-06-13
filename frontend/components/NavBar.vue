@@ -4,7 +4,7 @@
     <nav v-if="isAuthenticated">
       <!-- <nuxt-link class="header-links" to="/students">List</nuxt-link> -->
       <!-- <nuxt-link class="header-links" to="/students/create">Create</nuxt-link> -->
-      <b-nav-item-dropdown right class="header-links" ref="navdropdown">
+      <b-nav-item-dropdown ref="navdropdown" right class="header-links">
         <!-- Using 'button-content' slot -->
         <template #button-content>
           <em>Student</em>
@@ -21,11 +21,24 @@
       </b-nav-item-dropdown>
       <a
         class="header-links"
+        :class="applyAnim === true ? 'chatAnimation' : ''"
+        href="#"
+        title="Chat"
+        @click.prevent="redirectToChat"
+      >
+        <font-awesome-icon
+          :icon="['fas', 'comment-dots']"
+          title="Chats"
+          class="fs-4 flex-item me-3"
+        />
+      </a>
+      <a
+        class="header-links"
         href="/logout"
         title="Logout"
         @click.prevent="logout"
       >
-        {{ loggedInUser }}
+        {{ loggedInUser.name }}
       </a>
       <ColorModePicker />
     </nav>
@@ -49,6 +62,11 @@ export default {
     ColorModePicker,
     BNavItemDropdown,
   },
+  data() {
+    return {
+      applyAnim: false,
+    }
+  },
   head() {
     return {
       script: [{ src: '/bootstrap/bootstrap.min.js', type: 'text/javascript' }],
@@ -59,6 +77,13 @@ export default {
   },
 
   methods: {
+    redirectToChat() {
+      this.applyAnim = true
+      setTimeout(() => {
+        this.$router.push('/chat')
+        return false
+      }, 1000)
+    },
     async logout() {
       if (!confirm('Are you sure you want to logout?')) return
       await this.$auth.logout('local')
@@ -89,8 +114,7 @@ li.header-links * {
 }
 li.header-links:active,
 li.header-links:focus,
-li.header-links:focus-visible
- {
+li.header-links:focus-visible {
   border: none !important;
 }
 .brand {
@@ -130,6 +154,35 @@ li.header-links:focus-visible
   }
   .header-links::after {
     margin-left: 8px;
+  }
+}
+
+.chatAnimation::before {
+  content: ' ';
+  background-color: rgba(57, 185, 130, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 10;
+  animation: growAnim 1s ease-in-out forwards;
+}
+@keyframes growAnim {
+  0% {
+    clip-path: circle(0% at 85.5% 7%);
+  }
+  85% {
+    background-color: rgb(9, 26, 40, 1);
+  }
+  90% {
+    clip-path: circle(150%);
+    background-color: rgb(9, 26, 40, 1);
+  }
+  100% {
+    clip-path: circle(150%);
+    background-color: rgb(9, 26, 40, 1);
   }
 }
 </style>

@@ -146,7 +146,7 @@ export default {
           type: 'Bearer',
         },
         user: {
-          property: 'data.username',
+          property: 'data',
           // property: ''
           // autoFetch: true
         },

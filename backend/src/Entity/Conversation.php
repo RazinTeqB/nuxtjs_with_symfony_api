@@ -24,13 +24,13 @@ class Conversation
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'conversations')]
     #[ORM\JoinColumn(nullable: false)]
-    private $user_id;
+    private $user;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'conversations_with')]
     #[ORM\JoinColumn(nullable: false)]
-    private $conv_with_user_id;
+    private $conv_with_user;
 
-    #[ORM\OneToMany(mappedBy: 'conversation_id', targetEntity: Chat::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'conversation', targetEntity: Chat::class, orphanRemoval: true)]
     private $chats;
 
     public function __construct()
@@ -55,26 +55,26 @@ class Conversation
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getConvWithUserId(): ?User
+    public function getConvWithUser(): ?User
     {
-        return $this->conv_with_user_id;
+        return $this->conv_with_user;
     }
 
-    public function setConvWithUserId(?User $conv_with_user_id): self
+    public function setConvWithUser(?User $conv_with_user): self
     {
-        $this->conv_with_user_id = $conv_with_user_id;
+        $this->conv_with_user = $conv_with_user;
 
         return $this;
     }
@@ -91,7 +91,7 @@ class Conversation
     {
         if (!$this->chats->contains($chat)) {
             $this->chats[] = $chat;
-            $chat->setConversationId($this);
+            $chat->setConversation($this);
         }
 
         return $this;
@@ -101,8 +101,8 @@ class Conversation
     {
         if ($this->chats->removeElement($chat)) {
             // set the owning side to null (unless already changed)
-            if ($chat->getConversationId() === $this) {
-                $chat->setConversationId(null);
+            if ($chat->getConversation() === $this) {
+                $chat->setConversation(null);
             }
         }
 

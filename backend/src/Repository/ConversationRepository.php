@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Conversation;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,28 +40,49 @@ class ConversationRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Conversation[] Returns an array of Conversation objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getConversations(User $user): array
+    {
+        $conversations = $this->createQueryBuilder('c')
+            ->select('c.id', 'u.name as conv_with_user')
+            ->where('c.user = :user')
+            ->setParameter('user', $user)
+            ->innerJoin('c.conv_with_user', 'u', 'WITH', 'u.id = c.conv_with_user')
+            ->getQuery()
+            ->getArrayResult();
 
-//    public function findOneBySomeField($value): ?Conversation
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $inverse_conversations = $this->createQueryBuilder('c')
+            ->select('c.id', 'u.name as conv_with_user')
+            ->where('c.conv_with_user = :conv_with_user')
+            ->setParameter('conv_with_user', $user)
+            ->innerJoin('c.user', 'u', 'WITH', 'u.id = c.user')
+            ->getQuery()
+            ->getArrayResult();
+
+        return array_merge($conversations, $inverse_conversations);
+    }
+
+    //    /**
+    //     * @return Conversation[] Returns an array of Conversation objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Conversation
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

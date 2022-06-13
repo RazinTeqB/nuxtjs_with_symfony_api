@@ -33,6 +33,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // #[ORM\Column(type: 'string', length: 180, unique: true)]
     // private $email;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read", "write"])]
+    private $name;
+
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Groups(["read", "write"])]
     private $username;
@@ -49,13 +53,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // #[Groups(["write"])]
     private $students;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Conversation::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Conversation::class, orphanRemoval: true)]
     private $conversations;
 
-    #[ORM\OneToMany(mappedBy: 'conv_with_user_id', targetEntity: Conversation::class)]
+    #[ORM\OneToMany(mappedBy: 'conv_with_user', targetEntity: Conversation::class)]
     private $conversations_with;
 
-    #[ORM\OneToMany(mappedBy: 'by_user_id', targetEntity: Chat::class)]
+    #[ORM\OneToMany(mappedBy: 'by_user', targetEntity: Chat::class)]
     private $chats;
 
     #[ORM\PrePersist]
@@ -197,7 +201,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->conversations->contains($conversation)) {
             $this->conversations[] = $conversation;
-            $conversation->setUserId($this);
+            $conversation->setUser($this);
         }
 
         return $this;
@@ -207,8 +211,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->conversations->removeElement($conversation)) {
             // set the owning side to null (unless already changed)
-            if ($conversation->getUserId() === $this) {
-                $conversation->setUserId(null);
+            if ($conversation->getUser() === $this) {
+                $conversation->setUser(null);
             }
         }
 
@@ -227,7 +231,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->conversations_with->contains($conversationsWith)) {
             $this->conversations_with[] = $conversationsWith;
-            $conversationsWith->setConvWithUserId($this);
+            $conversationsWith->setConvWithUser($this);
         }
 
         return $this;
@@ -237,8 +241,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->conversations_with->removeElement($conversationsWith)) {
             // set the owning side to null (unless already changed)
-            if ($conversationsWith->getConvWithUserId() === $this) {
-                $conversationsWith->setConvWithUserId(null);
+            if ($conversationsWith->getConvWithUser() === $this) {
+                $conversationsWith->setConvWithUser(null);
             }
         }
 
@@ -257,7 +261,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->chats->contains($chat)) {
             $this->chats[] = $chat;
-            $chat->setByUserId($this);
+            $chat->setByUser($this);
         }
 
         return $this;
@@ -267,10 +271,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->chats->removeElement($chat)) {
             // set the owning side to null (unless already changed)
-            if ($chat->getByUserId() === $this) {
-                $chat->setByUserId(null);
+            if ($chat->getByUser() === $this) {
+                $chat->setByUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

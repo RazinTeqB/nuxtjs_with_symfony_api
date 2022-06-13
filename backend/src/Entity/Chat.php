@@ -22,14 +22,14 @@ class Chat
 
     #[ORM\ManyToOne(targetEntity: Conversation::class, inversedBy: 'chats')]
     #[ORM\JoinColumn(nullable: false)]
-    private $conversation_id;
+    private $conversation;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $message;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'chats')]
     #[ORM\JoinColumn(nullable: false)]
-    private $by_user_id;
+    private $by_user;
 
     #[ORM\PrePersist]
     public function onPrePersist()
@@ -48,14 +48,14 @@ class Chat
         return $this->id;
     }
 
-    public function getConversationId(): ?Conversation
+    public function getConversation(): ?Conversation
     {
-        return $this->conversation_id;
+        return $this->conversation;
     }
 
-    public function setConversationId(?Conversation $conversation_id): self
+    public function setConversation(?Conversation $conversation): self
     {
-        $this->conversation_id = $conversation_id;
+        $this->conversation = $conversation;
 
         return $this;
     }
@@ -72,14 +72,14 @@ class Chat
         return $this;
     }
 
-    public function getByUserId(): ?User
+    public function getByUser(): ?User
     {
-        return $this->by_user_id;
+        return $this->by_user;
     }
 
-    public function setByUserId(?User $by_user_id): self
+    public function setByUser(?User $by_user): self
     {
-        $this->by_user_id = $by_user_id;
+        $this->by_user = $by_user;
 
         return $this;
     }
