@@ -33,6 +33,12 @@ export default {
   name: 'Index',
   layout: '~/layout/default',
   middleware: 'auth',
+  mounted() {
+    console.log('Index mounted.')
+    this.$echo.channel('channel1').on('new-greeting', (e) => {
+      console.log(e.message);
+    })
+  },
 }
 </script>
 

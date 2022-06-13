@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Pusher\Pusher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -109,5 +111,15 @@ class AuthController extends AbstractController
             $statusCode = 422;
         }
         return new JsonResponse($response, $statusCode);
+    }
+
+    #[Route('/api/say-hello', name: 'say_hello', methods: ['GET'])]
+    public function sayHello(Pusher $pusher): Response
+    {
+        $pusher->trigger('channel1', 'new-greeting', [
+            'message' => 'Hello world!'
+        ]);
+
+        return new Response();
     }
 }
