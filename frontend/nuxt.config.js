@@ -37,9 +37,9 @@ export default {
     '@nuxtjs/svg',
     ['@nuxtjs/laravel-echo', {
       broadcaster: 'pusher',
-      // authModule: true,
-      // disconnectOnLogout: true,
-      // authEndpoint: process.env.API_URL + '/api/user',
+      authModule: true,
+      disconnectOnLogout: true,
+      authEndpoint: process.env.API_URL + '/api/user',
       key: process.env.WEBSOCKET_KEY,
       cluster: process.env.WEBSOCKET_CLUSTER,
       forceTLS: true,
@@ -57,14 +57,6 @@ export default {
     '@nuxtjs/toast',
   ],
 
-  /** Laravel ECHO Library  */
-  // echo: {
-  //   /* module options */
-  //   broadcaster: 'pusher',
-  //   plugins: [ '~/plugins/echo.js' ],
-  //   // authModule: true,
-  //   // disconnectOnLogout: true,
-  // },
   colorMode: {
     preference: 'system', // default value of $colorMode.preference
     fallback: 'light', // fallback value if not system preference found
