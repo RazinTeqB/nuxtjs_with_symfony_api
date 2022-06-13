@@ -16,6 +16,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Controller\StudentController;
+use App\Traits\Timestamps;
 
 // File Upload Reference https://digitalfortress.tech/php/file-upload-with-api-platform-and-symfony/
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
@@ -84,6 +85,8 @@ use App\Controller\StudentController;
 
 class Student
 {
+    use Timestamps;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
     #[ORM\Column(type: 'integer')]
@@ -122,16 +125,6 @@ class Student
         ]
     )]
     private $image;
-
-    #[Gedmo\Timestampable(on: 'create')]
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    #[Groups(["read"])]
-    private $created;
-
-    #[Gedmo\Timestampable]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Groups(["read"])]
-    private $updated;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'students', cascade: ['persist'])]
     #[ORM\JoinColumn(name: "UserId", referencedColumnName: "id", nullable: true, onDelete: 'SET NULL')]
@@ -212,30 +205,6 @@ class Student
     public function setImage(?string $image): self
     {
         $this->image = $image;
-
-        return $this;
-    }
-
-    public function getCreated(): ?\DateTime
-    {
-        return $this->created;
-    }
-
-    public function setCreated(\DateTime $created): self
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    public function getUpdated(): ?\DateTime
-    {
-        return $this->updated;
-    }
-
-    public function setUpdated(\DateTime $updated): self
-    {
-        $this->updated = $updated;
 
         return $this;
     }

@@ -10,7 +10,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Gedmo\Mapping\Annotation as Gedmo;
+use App\Traits\Timestamps;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -22,6 +22,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[UniqueEntity(fields: ['username'], message: 'This email is already in use.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use Timestamps;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
     #[ORM\Column(type: 'integer')]
@@ -36,25 +38,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $username;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(["read"])]
+    #[Groups(["read", "write"])]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
+    #[Groups(["read", "write"])]
     private $password;
-
-    #[Gedmo\Timestampable(on: 'create')]
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    #[Groups(["read"])]
-    private $created;
-
-    #[Gedmo\Timestampable]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Groups(["read"])]
-    private $updated;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Student::class)]
     // #[Groups(["write"])]
     private $students;
+
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Conversation::class, orphanRemoval: true)]
+    private $conversations;
+
+    #[ORM\OneToMany(mappedBy: 'conv_with_user_id', targetEntity: Conversation::class)]
+    private $conversations_with;
+
+    #[ORM\OneToMany(mappedBy: 'by_user_id', targetEntity: Chat::class)]
+    private $chats;
 
     #[ORM\PrePersist]
     public function onPrePersist()
@@ -71,6 +73,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->students = new ArrayCollection();
+        $this->conversations = new ArrayCollection();
+        $this->conversations_with = new ArrayCollection();
+        $this->chats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,29 +148,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getCreated(): ?\DateTime
-    {
-        return $this->created;
-    }
 
-    public function setCreated(\DateTime $created): self
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    public function getUpdated(): ?\DateTime
-    {
-        return $this->updated;
-    }
-
-    public function setUpdated(\DateTime $updated): self
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Student>
@@ -201,4 +184,94 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // {
     //     return $this->getUsername();
     // }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+            $conversation->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): self
+    {
+        if ($this->conversations->removeElement($conversation)) {
+            // set the owning side to null (unless already changed)
+            if ($conversation->getUserId() === $this) {
+                $conversation->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getConversationsWith(): Collection
+    {
+        return $this->conversations_with;
+    }
+
+    public function addConversationsWith(Conversation $conversationsWith): self
+    {
+        if (!$this->conversations_with->contains($conversationsWith)) {
+            $this->conversations_with[] = $conversationsWith;
+            $conversationsWith->setConvWithUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversationsWith(Conversation $conversationsWith): self
+    {
+        if ($this->conversations_with->removeElement($conversationsWith)) {
+            // set the owning side to null (unless already changed)
+            if ($conversationsWith->getConvWithUserId() === $this) {
+                $conversationsWith->setConvWithUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Chat>
+     */
+    public function getChats(): Collection
+    {
+        return $this->chats;
+    }
+
+    public function addChat(Chat $chat): self
+    {
+        if (!$this->chats->contains($chat)) {
+            $this->chats[] = $chat;
+            $chat->setByUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChat(Chat $chat): self
+    {
+        if ($this->chats->removeElement($chat)) {
+            // set the owning side to null (unless already changed)
+            if ($chat->getByUserId() === $this) {
+                $chat->setByUserId(null);
+            }
+        }
+
+        return $this;
+    }
 }
