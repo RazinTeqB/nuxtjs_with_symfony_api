@@ -7,7 +7,7 @@
       <b-nav-item-dropdown right class="header-links" ref="navdropdown">
         <!-- Using 'button-content' slot -->
         <template #button-content>
-          <em>User</em>
+          <em>Student</em>
         </template>
         <a
           class="dropdown-item"
