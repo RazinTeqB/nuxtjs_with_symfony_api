@@ -17,6 +17,7 @@
               type="email"
               class="form-control"
               name="email"
+              autofocus
             />
           </div>
           <div class="form-group mt-3">

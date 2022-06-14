@@ -55,6 +55,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     '@nuxtjs/toast',
+    'nuxt-vue-select',
   ],
 
   colorMode: {

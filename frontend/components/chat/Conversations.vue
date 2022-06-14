@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-3 chat-conversation-list-box custom-border">
+  <div class="col-md-3 chat-conversation-list-box custom-border d-none d-md-block">
     <div
       v-for="conversation in conversations"
       :key="conversation.id"

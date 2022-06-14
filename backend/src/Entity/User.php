@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,12 +13,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use App\Traits\Timestamps;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     normalizationContext: ["groups" => ["read"]],
     denormalizationContext: ["groups" => ["write"]],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['username' => 'ipartial'])]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['username'], message: 'This email is already in use.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface

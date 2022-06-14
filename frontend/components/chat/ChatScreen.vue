@@ -1,6 +1,9 @@
 <template>
-  <div class="col-md-9 chat-conversation-box custom-border">
-    <div v-if="conversation === '' || conversation === null" class="no-chat">
+  <div class="col-md-9 chat-conversation-box custom-border border">
+    <div
+      v-if="selected_conversation === '' || selected_conversation === null"
+      class="no-chat"
+    >
       No Chat Selected
     </div>
     <div v-else class="chat-container">
@@ -27,11 +30,12 @@
           type="text"
           class="form-control"
           style="width: 90% !important"
-          @keyup.enter="sendMessage($event)"
+          @keyup.enter="sendMessage(message)"
         />
         <button
           class="btn btn-success rounded-circle p-3"
           style="padding-left: 0.8rem !important"
+          @click="sendMessage(message)"
         >
           <font-awesome-icon
             :icon="['fas', 'paper-plane']"
@@ -47,6 +51,10 @@ export default {
   name: 'ChatScreen',
   props: {
     conversation: {
+      type: Object,
+      default: null,
+    },
+    selected_conversation: {
       type: Number,
       default: null,
     },
@@ -58,44 +66,61 @@ export default {
     }
   },
   watch: {
-    conversation(newVal, oldVal) {
-      if (newVal !== oldVal) {
-        this.getMessages()
-        this.message = ''
+    selected_conversation(newVal, oldVal) {
+      if (this.conversation.id === newVal) {
+        if (newVal === oldVal) {
+          this.getMessages()
+        }
+        // this.message = ''
       }
     },
   },
-  mounted() {},
-
+  mounted() {
+    this.getMessages()
+    if (this.conversation.id !== undefined || this.conversation.id !== null) {
+      this.$echo
+        .channel('conversation-' + this.conversation.id)
+        .on('chat', (e) => {
+          if (e.data !== null || e.data !== undefined) {
+            this.messagesData.push(e.data)
+          }
+        })
+    }
+  },
+  beforeDestroy() {
+    this.$echo.leave('conversation-' + this.conversation.id)
+  },
   methods: {
     getMessages() {
       this.$axios
-        .get('/api/chat/messages/' + this.conversation)
+        .get('/api/chat/messages/' + this.conversation.id)
         .then((response) => {
           this.messagesData = response.data
         })
     },
-    sendMessage(event) {
-      console.log(event.target.value)
-      console.log(this.conversationId)
-      // if (this.message !== '') {
-      //   this.$axios
-      //     .post('/api/chat/messages/' + conversationId, {
-      //       message: this.message,
-      //     })
-      //     .then((response) => {
-      //       this.message = ''
-      //       this.getMessages()
-      //     })
-      // }
+    sendMessage(messageData) {
+      if (messageData !== '') {
+        this.$axios
+          .post('/api/chat/messages/' + this.conversation.id, {
+            message: messageData,
+          })
+          .then((response) => {
+            console.log(response.data.message)
+            // const rsp = response
+            this.message = ''
+          })
+      }
     },
   },
 }
 </script>
 
 <style>
+.chat-conversation-box {
+  max-height: 91vh !important;
+}
 .chat-container {
-  height: 100%;
+  height: 80%;
   width: 100%;
   overflow-y: auto;
 }

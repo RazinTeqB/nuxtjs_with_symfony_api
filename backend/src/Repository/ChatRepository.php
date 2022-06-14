@@ -45,7 +45,7 @@ class ChatRepository extends ServiceEntityRepository
             ->select('c.id', 'c.message', 'IDENTITY(c.by_user) as by_user', 'c.created')
             ->where('c.conversation = :conversation')
             ->setParameter('conversation', $conversation)
-            ->orderBy('c.created', 'DESC')
+            ->orderBy('c.created', 'ASC')
             ->getQuery()
             ->getResult();
     }

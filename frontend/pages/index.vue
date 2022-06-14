@@ -35,9 +35,9 @@ export default {
   middleware: 'auth',
   mounted() {
     console.log('Index mounted.')
-    this.$echo.channel('channel1').on('new-greeting', (e) => {
-      console.log(e.message);
-    })
+    // this.$echo.channel('channel1').on('new-greeting', (e) => {
+    //   console.log(e.message);
+    // })
   },
 }
 </script>
