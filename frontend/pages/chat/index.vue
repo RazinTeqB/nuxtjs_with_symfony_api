@@ -5,12 +5,24 @@
     </div>
     <div class="row">
       <div class="col-md-12 custom-border p-2 ps-3">
-        <h3>Real-Time Chat System</h3>
+        <div class="d-flex flex-row align-items-center">
+          <button
+            class="navbar-toggler align-self-end mb-1"
+            type="button"
+            @click="toggleSidebar = !toggleSidebar"
+          >
+            <font-awesome-icon :icon="['fas', 'bars']" class="float-start" />
+          </button>
+          <span class="fs-3 ms-3 m-0">Real-Time Chat System</span>
+        </div>
       </div>
     </div>
     <div class="row" style="height: 91.3%">
       <!-- <Conversations /> -->
-      <div class="col-md-3 chat-conversation-list-box custom-border">
+      <div
+        :class="toggleSidebar ? 'collapse' : ''"
+        class="col-md-3 chat-conversation-list-box custom-border border-top-0"
+      >
         <div class="col-md-12 mt-2">
           <v-select
             label="name"
@@ -20,8 +32,9 @@
             :clear-search-on-select="true"
             @search="onSearchUsers"
             @input="startNewConv($event)"
+            placeholder="Start new conversation"
           >
-            <template slot="no-options"> type to search.. </template>
+            <template slot="no-options"> Type to search.. </template>
             <template slot="option" slot-scope="option">
               <div class="d-center">
                 <span>{{ option.name }}</span>
@@ -37,15 +50,6 @@
               </div>
             </template>
           </v-select>
-          <!-- <select type="text" class="form-control">
-            <option
-              value=""
-              title="Start typing to search"
-              @input="searchUsers($event.target.value)"
-            >
-              Start new conversation
-            </option>
-          </select> -->
         </div>
         <div
           v-for="conversation in conversations"
@@ -108,6 +112,7 @@ export default {
   data() {
     return {
       conversation_id: null,
+      toggleSidebar: false,
       conversations: [],
       isLoading: true,
       searchUser: {
@@ -117,6 +122,9 @@ export default {
     }
   },
   mounted() {
+    if (window.innerWidth < 770) {
+      this.toggleSidebar = true
+    }
     this.getConversations()
     this.$echo
       .channel('user-' + this.$auth.user.id)

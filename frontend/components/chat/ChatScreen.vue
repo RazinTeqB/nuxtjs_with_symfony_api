@@ -6,7 +6,7 @@
     >
       No Chat Selected
     </div>
-    <div v-else class="chat-container">
+    <div v-else id="chat-container" class="chat-container" >
       <div
         v-for="messageData in messagesData"
         :key="messageData.id"
@@ -29,7 +29,8 @@
           v-model="message"
           type="text"
           class="form-control"
-          style="width: 90% !important"
+          style="width: 80% !important"
+          placeholder="Type a message..."
           @keyup.enter="sendMessage(message)"
         />
         <button
@@ -86,17 +87,25 @@ export default {
           }
         })
     }
+    this.scrollToBottom()
   },
   beforeDestroy() {
     this.$echo.leave('conversation-' + this.conversation.id)
   },
   methods: {
+    scrollToBottom() {
+      const container = this.$el.querySelector('#chat-container')
+      if (container !== null) {
+        container.scrollTop = container.scrollHeight + 500
+      }
+    },
     getMessages() {
       this.$axios
         .get('/api/chat/messages/' + this.conversation.id)
         .then((response) => {
           this.messagesData = response.data
         })
+      this.scrollToBottom()
     },
     sendMessage(messageData) {
       if (messageData !== '') {
@@ -130,12 +139,17 @@ export default {
 }
 .chat-send-msg-container {
   /* border: 1px solid red; */
-  width: 74%;
+  width: 76%;
   height: 50px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   bottom: 5px;
   position: fixed;
+}
+@media screen and (max-width: 768px) {
+  .chat-send-msg-container {
+    width: 100%;
+  }
 }
 </style>
